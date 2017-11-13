@@ -25,7 +25,7 @@
     
     [QFNetWorkManger request:Getbycondition withView:self.view withAnimated:YES withParameters:@{@"limit":@"5",@"page":@"1"} httpMethod:kHTTP_POST responseCallBack:^(NSDictionary *responseDictionary, NSError *error) {
         if (error) {
-            NSLog(@"---error : %@",error);
+            DLog(@"---error : %@",error);
         }else{
             ProductModel *model = [ProductModel yy_modelWithJSON:responseDictionary];;
             DLog(@"responseDictionary %@",model);

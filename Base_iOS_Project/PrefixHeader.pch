@@ -9,7 +9,6 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-
 #import <UIKit/UIKit.h>
 #import "DQAlertView.h"
 #import "YYModel.h"
@@ -23,12 +22,6 @@
 #import "UserInfo.h"
 #import "QFNetWorkManger.h"
 #import "CLGlobal.h"
-
-#define KStatusBarAndNavBarHeight 64.0f
-//获取当前手机系统版本
-#define MOBILE_SYS_VER ([[[UIDevice currentDevice]systemVersion] floatValue])
-#define SYS_VER_BEYOND_AND_EQUAL_7 (MOBILE_SYS_VER >= 7.0)?(YES):(NO)
-
 
 #endif
 

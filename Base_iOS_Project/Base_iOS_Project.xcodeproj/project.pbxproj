@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6B784ECF1FB9FE7E0030C733 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B784ECE1FB9FE7E0030C733 /* AppDelegate.m */; };
-		6B784ED21FB9FE7E0030C733 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B784ED11FB9FE7E0030C733 /* ViewController.m */; };
 		6B784ED51FB9FE7E0030C733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B784ED31FB9FE7E0030C733 /* Main.storyboard */; };
 		6B784ED71FB9FE7E0030C733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B784ED61FB9FE7E0030C733 /* Assets.xcassets */; };
 		6B784EDA1FB9FE7E0030C733 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B784ED81FB9FE7E0030C733 /* LaunchScreen.storyboard */; };
@@ -63,14 +62,13 @@
 		6B784FBA1FBA23440030C733 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6B784FB21FBA23430030C733 /* README.md */; };
 		6B784FBB1FBA23440030C733 /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B784FB51FBA23430030C733 /* NSObject+YYModel.m */; };
 		6B784FBC1FBA23440030C733 /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B784FB71FBA23430030C733 /* YYClassInfo.m */; };
+		6B784FBF1FBA388B0030C733 /* SelectUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B784FBE1FBA388B0030C733 /* SelectUrlViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6B784ECA1FB9FE7E0030C733 /* Base_iOS_Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Base_iOS_Project.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B784ECD1FB9FE7E0030C733 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6B784ECE1FB9FE7E0030C733 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6B784ED01FB9FE7E0030C733 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6B784ED11FB9FE7E0030C733 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6B784ED41FB9FE7E0030C733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6B784ED61FB9FE7E0030C733 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B784ED91FB9FE7E0030C733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -163,6 +161,8 @@
 		6B784FB61FBA23430030C733 /* YYClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYClassInfo.h; sourceTree = "<group>"; };
 		6B784FB71FBA23430030C733 /* YYClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYClassInfo.m; sourceTree = "<group>"; };
 		6B784FB81FBA23430030C733 /* YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYModel.h; sourceTree = "<group>"; };
+		6B784FBD1FBA388B0030C733 /* SelectUrlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectUrlViewController.h; sourceTree = "<group>"; };
+		6B784FBE1FBA388B0030C733 /* SelectUrlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectUrlViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,8 +204,6 @@
 				6B784EE31FB9FF0F0030C733 /* UserInfo */,
 				6B784ECD1FB9FE7E0030C733 /* AppDelegate.h */,
 				6B784ECE1FB9FE7E0030C733 /* AppDelegate.m */,
-				6B784ED01FB9FE7E0030C733 /* ViewController.h */,
-				6B784ED11FB9FE7E0030C733 /* ViewController.m */,
 				6B784ED31FB9FE7E0030C733 /* Main.storyboard */,
 				6B784ED61FB9FE7E0030C733 /* Assets.xcassets */,
 				6B784ED81FB9FE7E0030C733 /* LaunchScreen.storyboard */,
@@ -344,6 +342,8 @@
 				6B784F401FB9FF0F0030C733 /* ViewControllerSecond.m */,
 				6B784F411FB9FF0F0030C733 /* ViewControllerThird.h */,
 				6B784F421FB9FF0F0030C733 /* ViewControllerThird.m */,
+				6B784FBD1FBA388B0030C733 /* SelectUrlViewController.h */,
+				6B784FBE1FBA388B0030C733 /* SelectUrlViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -519,6 +519,7 @@
 				6B784FAF1FBA220D0030C733 /* YJUIView+Additions.m in Sources */,
 				6B784F6E1FB9FF0F0030C733 /* NSDate+RFC1123.m in Sources */,
 				6B784F721FB9FF0F0030C733 /* NSString+MKNKAdditions.m in Sources */,
+				6B784FBF1FBA388B0030C733 /* SelectUrlViewController.m in Sources */,
 				6B784F601FB9FF0F0030C733 /* UIView+Toast.m in Sources */,
 				6B784F791FB9FF0F0030C733 /* QFHttpUrl.m in Sources */,
 				6B784F841FB9FF0F0030C733 /* BaseModel.m in Sources */,
@@ -526,7 +527,6 @@
 				6B784F5B1FB9FF0F0030C733 /* UserInfo.m in Sources */,
 				6B784F861FB9FF0F0030C733 /* ProductModel.m in Sources */,
 				6B784F731FB9FF0F0030C733 /* UIAlertView+MKNKAdditions.m in Sources */,
-				6B784ED21FB9FE7E0030C733 /* ViewController.m in Sources */,
 				6B784F741FB9FF0F0030C733 /* UIImageView+MKNKAdditions.m in Sources */,
 				6B784EDD1FB9FE7E0030C733 /* main.m in Sources */,
 				6B784F621FB9FF0F0030C733 /* MBProgressHUD.m in Sources */,

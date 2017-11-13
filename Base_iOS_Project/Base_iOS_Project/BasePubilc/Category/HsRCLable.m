@@ -1710,7 +1710,7 @@ CGFloat MyGetWidthCallback( void* refCon ){
 		}
 		else if ([component.tagLabel isEqualToString:@"p"])
 		{
-            //<p align=left/right/center indent=1 linebreakmode=wordwrap ></p>
+            ///< align=left/right/center indent=1 linebreakmode=wordwrap ></p>
 			[self applyParagraphStyleToText:_attrString attributes:component.attributes atPosition:component.position withLength:(int)[component.text length]];
 		}
         else if([component.tagLabel isEqualToString:@"img"])

@@ -12,17 +12,8 @@
     /**AppStore渠道*/
     //#define _APP_STORE_ 1
 
-    /**蒲公英测试环境 开发使用*/
-//    #define _PGYER_CARDEBUG_ 1
-
-    //*蒲公英公测环境（内测及销售测试使用）
-    //#define _PGYER_CARTEST_ 1
-
-    /**蒲公英正式灰度环境（提测前灰度环境测试）*/
-//    #define _PGYER_CARINFORMAL_ 1
-
-    /**蒲公英正式环境（客户使用）*/
-    #define _PGYER_CARFORMAL_ 1
+    /*开发环境*/
+    #define _PGYER_CARDEBUG_ 1
 
     #if _APP_STORE_
 
@@ -32,14 +23,9 @@
         #define KXGSecretKey      7483927483
 
     #elif _PGYER_CARDEBUG_
-
-        //信鸽AppStore
-        #define KXGAppId          8943738397
-        #define KXGAppKey         7832749
-        #define KXGSecretKey      7483927483
-
-    #elif _PGYER_CARINFORMAL_
-
+    #define kTestDebug
+    //用于切换网络使用
+    #define UrlKey @"UrlKey"
         //信鸽AppStore
         #define KXGAppId          8943738397
         #define KXGAppKey         7832749
@@ -47,9 +33,9 @@
 
     #endif
 
-    #if (_APP_STORE_ + _PGYER_CARDEBUG_ + _PGYER_CARTEST_ + _PGYER_CARFORMAL_ + _PGYER_CARINFORMAL_ != 1)
+    #if (_APP_STORE_ + _PGYER_CARDEBUG_ != 1)
     #error only _APP_STORE_ or _PGYER_CARDEBUG_ or _PGYER_CARTEST_ or _PGYER_CARFORMAL_ or _PGYER_CARINFORMAL_
-    #endif//_APP_STORE_
+    #endif
 
     #define MyFormat(format, ...) [NSString stringWithFormat:(format), ##__VA_ARGS__]
 
@@ -74,10 +60,17 @@
     #define kScreenHeight [UIScreen mainScreen].bounds.size.height
     #define kAppDelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
-    #ifdef DEBUG
+    #ifdef kTestDebug
     #define DLog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);}
     #else
     #defineNSLog(...){}
     #endif
+
+    #define KStatusBarAndNavBarHeight 64.0f
+    //获取当前手机系统版本
+    #define MOBILE_SYS_VER ([[[UIDevice currentDevice]systemVersion] floatValue])
+    #define SYS_VER_BEYOND_AND_EQUAL_7 (MOBILE_SYS_VER >= 7.0)?(YES):(NO)
+    #define SYS_VER_BEYOND_AND_EQUAL_11 (MOBILE_SYS_VER >= 11.0)?(YES):(NO)
+
 
 #endif /* CLGlobal_h */

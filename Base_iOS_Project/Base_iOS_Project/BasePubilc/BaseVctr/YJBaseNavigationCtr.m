@@ -119,13 +119,11 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     [super pushViewController:viewController animated:animated];
-//    if (self.viewControllers.count > 1) {
-//        viewController.hidesBottomBarWhenPushed = YES;
-//    }
-    CGRect frame = self.tabBarController.tabBar.frame;
-    frame.origin.y = [UIScreen mainScreen].bounds.size.height - frame.size.height;
-    kAppDelegate.mTabBarVCtr.tabBar.frame = frame;
-    
+    if (SYS_VER_BEYOND_AND_EQUAL_11) {
+        CGRect frame = self.tabBarController.tabBar.frame;
+        frame.origin.y = [UIScreen mainScreen].bounds.size.height - frame.size.height;
+        kAppDelegate.mTabBarVCtr.tabBar.frame = frame;
+    }
 }
 
 @end

@@ -8,9 +8,7 @@
 
 #import "QFHttpUrl.h"
 
-//test
 #define kBaseUrl @"http://www.huowangtong.com"
-//#define kBaseUrl @"http://192.168.49.50:9080/"
 
 
 
@@ -68,8 +66,8 @@ static QFHttpUrl *sharedHttpUrl = nil;
 }
 
 - (NSString *)getBaseUrl{
-#ifdef TestBug
-    NSString *url=[USER_DEFAULTS objectForKey:@"environment_Url"];
+#ifdef kTestDebug
+    NSString *url=[kUserDefault objectForKey:UrlKey];
     NSString *URL =  url.length > 0 ? url:kBaseUrl;
     return URL;
 #else

@@ -531,7 +531,7 @@ didFinishDownloadingToURL:(NSURL *)location {
     
     if (count == 0) {
       
-      void (^backgroundSessionCompletionHandlerCopy)() = self.backgroundSessionCompletionHandler;
+        void (^backgroundSessionCompletionHandlerCopy)(void) = self.backgroundSessionCompletionHandler;
       
       if (self.backgroundSessionCompletionHandler) {
         self.backgroundSessionCompletionHandler = nil;
