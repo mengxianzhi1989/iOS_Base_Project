@@ -10,8 +10,6 @@
 
 #define kBaseUrl @"http://www.huowangtong.com"
 
-
-
 static QFHttpUrl *sharedHttpUrl = nil;
 @implementation QFHttpUrl
 
