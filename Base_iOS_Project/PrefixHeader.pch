@@ -15,13 +15,14 @@
 #import "PubilcClass.h"
 #import "YJUIView+Additions.h"
 #import "YJBaseVCtr.h"
-#import "UIView+Toast.h"
 #import "QFHttpDefine.h"
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 #import "UserInfo.h"
-#import "QFNetWorkManger.h"
+#import "YQNetworking.h"
+#import "QFHttpUrl.h"
 #import "CLGlobal.h"
+#import "CLSystemHelper.h"
 
 #endif
 

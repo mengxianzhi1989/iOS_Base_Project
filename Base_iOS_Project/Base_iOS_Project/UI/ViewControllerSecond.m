@@ -22,7 +22,7 @@
     [self initTitleView:@"首页"];
     UIButton *but = [UIButton buttonWithType:UIButtonTypeSystem];
     [but setBackgroundColor:[UIColor cyanColor]];
-    [but setFrame:CGRectMake(0,self.mNavImgView.bottom, 100, 100)];
+    [but setFrame:CGRectMake(0,200, 100, 100)];
     [but addTarget:self action:@selector(jump) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:but];
 }
@@ -41,7 +41,7 @@
         [tempButton setTitle:@"网络选择" forState:UIControlStateNormal];
         [tempButton setBackgroundColor:[UIColor redColor]];
         [tempButton addTarget:self action:@selector(selectNetWork) forControlEvents:UIControlEventTouchUpInside];
-        [self.mBackGroudImageView addSubview:tempButton];
+        [self.view addSubview:tempButton];
     #endif
 }
 

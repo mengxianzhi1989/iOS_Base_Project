@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 youjie8.com. All rights reserved.
 //
 
+#define TITLETAG 919191
+
 #import "YJBaseVCtr.h"
 #import "AppDelegate.h"
 #import "DQAlertView.h"
@@ -24,7 +26,6 @@
 
 @implementation YJBaseVCtr
 @synthesize mWaitBgView;
-@synthesize mBackGroudImageView;
 @synthesize mNavImgView;
 @synthesize mIncrease;
 @synthesize mNavBarH;
@@ -34,7 +35,7 @@
 @synthesize mTitleStr;
 
 -(void)dealloc {
-    [self clearBlockWaitView];
+    [self clearWaitView];
 }
 
 - (void)viewDidLoad {
@@ -95,17 +96,6 @@
     [super viewWillDisappear:animated];
 }
 
-#pragma mark -- BackGroundView
--(UIImageView *)mBackGroudImageView {
-    if (!mBackGroudImageView) {
-        mBackGroudImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-        mBackGroudImageView.userInteractionEnabled = YES;
-        mBackGroudImageView.backgroundColor = UIColorFromRGB(0xf6f6f6);
-        [self.view addSubview:mBackGroudImageView];
-    }
-    
-    return mBackGroudImageView;
-}
 
 #pragma mark -- mNavImgView
 -(UIImageView *)mNavImgView {
@@ -116,7 +106,7 @@
         mNavImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,kScreenWidth,self.mNavBarH + self.mIncrease)];
         mNavImgView.userInteractionEnabled = YES;
         mNavImgView.image = [[UIImage imageNamed:@"a1_titlebackground"] stretchableImageWithLeftCapWidth:6 topCapHeight:6];
-        [self.mBackGroudImageView addSubview:mNavImgView];
+        [self.view addSubview:mNavImgView];
     }
     return mNavImgView;
 }
@@ -125,11 +115,11 @@
 -(void)initWaitView {
     [self clearWaitView];
     UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    self.mWaitBgView = bgview;
+    mWaitBgView = bgview;
     [mWaitBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6f]];
     [mWaitBgView.layer setMasksToBounds:YES];
     [mWaitBgView.layer setCornerRadius:3.0f];
-    mWaitBgView.center = self.mBackGroudImageView.center;
+    mWaitBgView.center = self.view.center;
     [self.view addSubview:mWaitBgView];
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -139,30 +129,28 @@
     [activityIndicator startAnimating];
 }
 
-//带提示的等待
 -(void)initWaitViewWithString:(NSString*)aStr {
     [self clearWaitView];
-    CGSize textSize = [PubilcClass string:aStr withFont:13 withLimitWidth:80];
-    UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 30 + textSize.height + 2*10 + 10)];
-    self.mWaitBgView = bgview;
-    
+    CGSize textSize = [PubilcClass string:aStr withFont:13 withMaxWidth:80];
+    UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120,120)];
+    mWaitBgView = bgview;
+
     [mWaitBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6f]];
     [mWaitBgView.layer setMasksToBounds:YES];
     [mWaitBgView.layer setCornerRadius:3.0f];
-    mWaitBgView.center = self.mBackGroudImageView.center;
+    mWaitBgView.center = self.view.center;
     [self.view addSubview:mWaitBgView];
-    
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((bgview.width - 30)/2, 10, 30, 30)];
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((bgview.width - 30)/2, 25, 30, 30)];
     [mWaitBgView addSubview:activityIndicator];
     activityIndicator.color = [UIColor whiteColor];
     [activityIndicator startAnimating];
-    
+
     UILabel* tipsLabel = [[UILabel alloc] init];
     [tipsLabel setText:aStr];
     [tipsLabel setFont:[UIFont systemFontOfSize:13]];
     [tipsLabel setTextColor:[UIColor whiteColor]];
     [tipsLabel setTextAlignment:NSTextAlignmentCenter];
-    [tipsLabel setFrame:CGRectMake(10, activityIndicator.bottom + 10, textSize.width, textSize.height)];
+    [tipsLabel setFrame:CGRectMake(0, activityIndicator.bottom + 10,bgview.width, textSize.height)];
     tipsLabel.numberOfLines = 0;
     [mWaitBgView addSubview:tipsLabel];
 }
@@ -175,15 +163,16 @@
 }
 
 -(void)initBlockWaitWithString:(NSString*)aStr {
-    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
-        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
-    }
+//    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
+//        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
+//    }
     UIView* bgView = [[UIView alloc] initWithFrame:[UIScreen mainScreen ].bounds];
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
-    [PubilcClass addGlobalView:bgView withType:YJ_GView_WaitBg];
-    
-    CGSize textSize = [PubilcClass string:aStr withFont:14 withLimitWidth:80];
-    UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 152, 152)];
+    mWaitBgView = bgView;
+//    [PubilcClass addGlobalView:bgView withType:YJ_GView_WaitBg];
+    [self.view addSubview:bgView];
+    CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
+    UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,120,120)];
 
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
     [realBgView.layer setMasksToBounds:YES];
@@ -191,11 +180,12 @@
     realBgView.center = bgView.center;
     [bgView addSubview:realBgView];
     
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((realBgView.width - 37)/2, 39, 37, 37)];
-    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    [realBgView addSubview:activityIndicator];
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((realBgView.width - 30)/2, 25, 30, 30)];
+    [mWaitBgView addSubview:activityIndicator];
     activityIndicator.color = [UIColor whiteColor];
     [activityIndicator startAnimating];
+    [realBgView addSubview:activityIndicator];
+
     //提示文字
     if (aStr != nil && [aStr length]>0) {
         UILabel* tipsLabel = [[UILabel alloc] init];
@@ -209,16 +199,17 @@
     }
 }
 
-// 添加block wait view不覆盖导航栏
 -(void)initBlockWaitUnderNavigationaBarWithString:(NSString*)aStr {
-    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
-        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
-    }
+//    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
+//        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
+//    }
     UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0, mNavImgView.bottom, kScreenWidth, kScreenHeight- mNavImgView.bottom)];
+    mWaitBgView = bgView;
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
-    [PubilcClass addGlobalView:bgView withType:YJ_GView_WaitBg];
+//    [PubilcClass addGlobalView:bgView withType:YJ_GView_WaitBg];
+    [self.view addSubview:bgView];
     
-    CGSize textSize = [PubilcClass string:aStr withFont:14 withLimitWidth:80];
+    CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
     UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0.5*(kScreenWidth - 152), 0.5*(kScreenHeight - 152)-mNavImgView.bottom, 152, 152)];
     
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
@@ -245,9 +236,7 @@
     }
 }
 
--(void)clearBlockWaitView {
-    [PubilcClass removeGlobalView:YJ_GView_WaitBg];
-}
+
 -(void)showTipsMessage:(NSString *)aMessage withDuration:(NSTimeInterval)aDuration offSetY:(CGFloat)offsety
 {
     [self removeTipsView];
@@ -264,7 +253,7 @@
     [window addSubview:mTipsMessageBgView];
     
     UILabel *label = [[UILabel alloc]init];
-    CGSize LabelSize = [PubilcClass string:aMessage withFont:17 withLimitWidth:mTipsViewWidth-20];
+    CGSize LabelSize = [PubilcClass string:aMessage withFont:17 withMaxWidth:mTipsViewWidth-20];
     label.frame = CGRectMake((mTipsViewWidth-LabelSize.width)/2, 10, LabelSize.width, LabelSize.height);
     label.text = aMessage;
     label.textColor = [UIColor whiteColor];
@@ -327,9 +316,8 @@
 }
 
 -(void)back:(UIButton *)aBtn {
-    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
-        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
-    }
+    [YQNetworking cancleAllRequest];
+    [self clearWaitView];
     if (self.navigationController != nil ) {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -373,7 +361,6 @@
 }
 
 -(void)alertShow:(NSString *)message {
-
     [self alertShow:message message:nil btnTitle:@"确定"];
 }
 

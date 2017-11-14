@@ -11,8 +11,6 @@
 
 @interface YJBaseVCtr : UIViewController
 
-//背景view
-@property (nonatomic, strong) UIImageView*      mBackGroudImageView;
 //nav背景
 @property (nonatomic, strong) UIImageView*      mNavImgView;
 //状态栏高度
@@ -28,26 +26,31 @@
 
 
 - (instancetype)init;
-//waitView
+//load状态 接收点击事件
 -(void)initWaitView;
-//带提示的等待
+//带aStr 接收点击事件
 -(void)initWaitViewWithString:(NSString*)aStr;
--(void)clearWaitView;
-//block wait view
+
+//禁止交互
 -(void)initBlockWaitWithString:(NSString*)aStr;
+//导航栏接收点击事件
 -(void)initBlockWaitUnderNavigationaBarWithString:(NSString*)aStr;
--(void)clearBlockWaitView;
+
+-(void)clearWaitView;
+
+//确定
 -(void)alertShow:(NSString *)message;
+//alertView
 -(void)alertShow:(NSString *)title message:(NSString *)message btnTitle:(NSString *)btnTitle;
-//backButton
+
+//设置backButton
 -(void)initBackButton;
 -(void)initBackButtonImage:(UIImage *)image;
 -(void)setBackButton:(UIImage *)aImg withPress:(UIImage *)aPressImg;
 -(void)back:(UIButton *)aBtn;
 
-//TitleView
+//标题
 -(void)initTitleView:(NSString *)aTitleStr;
-
 -(void)initTitleView:(NSString *)aTitleStr textColor:(UIColor *)textColor;
 -(void)setTitleColor:(UIColor *)aColor;
 

@@ -9,6 +9,7 @@
 #import "ViewControllerThird.h"
 #import "AppDelegate.h"
 #import "ProductModel.h"
+#import "AFHTTPSessionManager.h"
 
 
 @interface ViewControllerThird ()
@@ -17,27 +18,50 @@
 
 @implementation ViewControllerThird
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initBackButton];
     [self initTitleView:@"ViewControllerThird"];
+
+//    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
+
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setFrame:CGRectMake(0, 300, 300, 100)];
+    [button setBackgroundColor:[UIColor redColor]];
+    [button addTarget:self action:@selector(setTaskDidComplete11) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    
+//    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
+//    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
+//        DLog(@"%@",@"success");
+//        [self clearWaitView];
+//    } failBlock:^(NSError *error) {
+//        DLog(@"%@",@"error");
+//        [self clearWaitView];
+//    }];
     
     
-    [QFNetWorkManger request:Getbycondition withView:self.view withAnimated:YES withParameters:@{@"limit":@"5",@"page":@"1"} httpMethod:kHTTP_POST responseCallBack:^(NSDictionary *responseDictionary, NSError *error) {
-        if (error) {
-            DLog(@"---error : %@",error);
-        }else{
-            ProductModel *model = [ProductModel yy_modelWithJSON:responseDictionary];;
-            DLog(@"responseDictionary %@",model);
-            [self.view makeToast:@"-----"];
-        }
+    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
+        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
+        DLog(@"%@ --- %@",@"success",model);
+        [self clearWaitView];
+    } failBlock:^(NSError *error) {
+        DLog(@"%@",error);
+        [self clearWaitView];
     }];
 }
 
-- (void)back:(UIButton *)aBtn{
-    AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appdelegate changeTableBarIndex:1];
-    [super back:aBtn];
+//- (void)back:(UIButton *)aBtn{
+//    AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    [appdelegate changeTableBarIndex:1];
+//    [super back:aBtn];
+//}
+
+- (void)setTaskDidComplete11{
+    NSLog(@"--------------");
 }
+
+
 
 @end

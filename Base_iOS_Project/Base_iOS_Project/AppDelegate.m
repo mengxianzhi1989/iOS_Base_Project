@@ -29,6 +29,19 @@
     self.window = [[UIWindow alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     [self adjustFirstLogin];
     [self.window makeKeyAndVisible];
+//    + (NSUInteger) deviceSystemMajorVersion;   //iOS 系统版本
+//    + (NSString *)deviceSystem;
+//    + (NSString *)deviceType;                  //设备类型
+//    + (NSString *)deviceName;                  //设备名称
+    
+    NSInteger a = [CLSystemHelper deviceSystemMajorVersion];
+    NSString *b = [CLSystemHelper deviceSystem];
+    NSInteger c = [CLSystemHelper deviceSystemMajorVersion];
+    if (kDevice_Is_iPhoneX) {
+        
+    }
+    NSLog(@"111");
+    DLog(@"222");
     return YES;
 }
 

@@ -11,7 +11,6 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import "PubilcClass.h"
 #include <sys/sysctl.h>
-#import "UIView+Toast.h"
 
 #define TOAST_DURATION 2
 #define USFormat YES
@@ -104,11 +103,11 @@
 }
 
 //输入字符串，字体大小，限制宽度 得出高度
-+(CGSize)string:(NSString*)aStr withFont:(CGFloat)aSize withLimitWidth:(CGFloat)aLimitWidth {
++(CGSize)string:(NSString*)aStr withFont:(CGFloat)aSize withMaxWidth:(CGFloat)aMaxWidth {
     NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle alloc]init];
     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:aSize], NSParagraphStyleAttributeName:paragraphStyle};
-    CGSize stringSize = [aStr boundingRectWithSize:CGSizeMake(aLimitWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+    CGSize stringSize = [aStr boundingRectWithSize:CGSizeMake(aMaxWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
     return stringSize;
 }
 //输入字符串，字体大小，限制宽度 得出高度
@@ -132,7 +131,6 @@
     for(int i = 0; i < window.subviews.count; i++) {
         int viewID = (int)((UIView*)[window.subviews objectAtIndex:i]).tag;
         if(viewID >= YJ_GView_Expand && viewID < YJ_GView_Edge){
-            
             if(aType < viewID) {
                 [window insertSubview:view atIndex:i];
                 return;
@@ -142,11 +140,12 @@
                     return;
                 }
                 if (aType == YJ_GView_UnlockV) {
-                    for (UIViewController *control in window.rootViewController.childViewControllers) {
+                    NSArray<UIViewController *> *vcs =  window.rootViewController.childViewControllers;
+//                    for (UIViewController *control in vcs) {
 //                        if ([control isKindOfClass:[YJGesturesPasswordVCtr class]]||[control isKindOfClass:[TouchIDVCtr class]]) {
 //                            [control removeFromParentViewController];
 //                        }
-                    }
+//                    }
                     [PubilcClass removeGlobalView:YJ_GView_UnlockV];
                 }
             }
@@ -163,7 +162,6 @@
         if (aType == YJ_GView_UnlockV && view.subviews) {
             [view removeAllSubviews];
         }
-        
         [view removeFromSuperview];
     }
 }
@@ -547,6 +545,26 @@
         }
     }
     return [prefix stringByAppendingString:suffix];
+}
+
++ (UIViewController *)topViewController {
+    UIViewController *resultVC;
+    resultVC = [self _topViewController:[[UIApplication sharedApplication].keyWindow rootViewController]];
+    while (resultVC.presentedViewController) {
+        resultVC = [self _topViewController:resultVC.presentedViewController];
+    }
+    return resultVC;
+}
+
++ (UIViewController *)_topViewController:(UIViewController *)vc {
+    if ([vc isKindOfClass:[UINavigationController class]]) {
+        return [self _topViewController:[(UINavigationController *)vc topViewController]];
+    } else if ([vc isKindOfClass:[UITabBarController class]]) {
+        return [self _topViewController:[(UITabBarController *)vc selectedViewController]];
+    } else {
+        return vc;
+    }
+    return nil;
 }
 
 @end

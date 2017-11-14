@@ -8,7 +8,8 @@
 
 #import "QFHttpUrl.h"
 
-#define kBaseUrl @"http://www.huowangtong.com"
+//#define kBaseUrl @"http://www.huowangtong.com"
+#define kBaseUrl @"http://news-at.zhihu.com"
 
 static QFHttpUrl *sharedHttpUrl = nil;
 @implementation QFHttpUrl
@@ -47,7 +48,8 @@ static QFHttpUrl *sharedHttpUrl = nil;
 
 #pragma -mark function
 -(NSString *)hostName:(NSString *)urlStr {
-    return [urlStr componentsSeparatedByString:@"://"].lastObject;
+//    return [urlStr componentsSeparatedByString:@"://"].lastObject;
+    return urlStr;
 }
 
 -(BOOL)httpHeader:(NSString *)urlStr {
@@ -87,9 +89,9 @@ static QFHttpUrl *sharedHttpUrl = nil;
             [strTmp appendFormat:@"%@",@"/login_check"];
         }
             break;
-        case CarSourceSave:
+        case NewsLatest:
         {
-            [strTmp appendFormat:@"%@",@"/customer/listSaleByStoreId"];
+            [strTmp appendFormat:@"%@",@"/api/4/news/latest"];
         }
             break;
         default:

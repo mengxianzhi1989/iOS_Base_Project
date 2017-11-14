@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     urlList = [[NSMutableArray alloc]init];
-    [urlList addObject:@"192.168.0.1"];
+    [urlList addObject:@"http://news-at.zhihu.com"];
     [urlList addObject:@"http://www.huowangtong.com"];
     mTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, self.mNavImgView.bottom, kScreenWidth, kScreenHeight - self.mNavImgView.bottom) style:UITableViewStylePlain];
     [mTableView setDelegate:self];
