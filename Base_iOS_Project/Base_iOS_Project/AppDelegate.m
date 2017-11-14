@@ -121,19 +121,24 @@
     _networkStatus = [_internetReach currentReachabilityStatus];
     if (_networkStatus) {
         self.connection = YES;
+        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络正常" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
+        [alert show];
     }else {
         self.connection = NO;
+        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络异常" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
+        [alert show];
     }
-    switch (_networkStatus) {
-        case NotReachable:{}
-            break;
-        caseReachableViaWiFi:{}
-            break;
-        caseReachableViaWWAN:{}
-            break;
-        default:
-            break;
-    }
+
+//    switch (_networkStatus) {
+//        case NotReachable:{}
+//            break;
+//        caseReachableViaWiFi:{}
+//            break;
+//        caseReachableViaWWAN:{}
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 //检测网络

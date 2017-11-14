@@ -25,6 +25,11 @@
     [but setFrame:CGRectMake(0,200, 100, 100)];
     [but addTarget:self action:@selector(jump) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:but];
+    
+    if (![AppDelegate getAppDelegate].connection) {
+        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络异常" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
+        [alert show];
+    }
 }
 
 - (void)jump{

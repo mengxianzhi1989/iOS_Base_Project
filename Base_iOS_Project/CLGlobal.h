@@ -2,7 +2,7 @@
 //  CLGlobal.h
 //  Car-league
 //
-//  Created by lxy on 16/5/24.
+//  Created by mengxianzhi on 16/5/24.
 //  Copyright © 2016年 lxy. All rights reserved.
 //
 
@@ -49,7 +49,7 @@
 
     // 判读代理是否响应
     #define DELEGATE_IS_READY(x) (self.delegate && [self.delegate respondsToSelector:@selector(x)])
-
+    #define SafeString(str) ((str == nil || STRING_IS_NIL(str)) ? @"" : str)
     // 判断字符串是否为空
     #define STRING_IS_NIL(key) (([@"<null>" isEqualToString:(key)] || [@"" isEqualToString:(key)] || key == nil || [key isKindOfClass:[NSNull class]]) ? YES: NO)
 
