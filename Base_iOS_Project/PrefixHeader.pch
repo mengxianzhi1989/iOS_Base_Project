@@ -23,6 +23,8 @@
 #import "QFHttpUrl.h"
 #import "CLGlobal.h"
 #import "CLSystemHelper.h"
+#import "IQKeyboardManager.h"
+#import "MJScrollView.h"
 
 #endif
 

@@ -179,7 +179,9 @@ static NSTimeInterval   requestTimeout = 20.f;
     AFHTTPSessionManager *manager = [self manager];
     
     if (networkStatus == YQNetworkStatusNotReachable) {
-        if (failBlock) failBlock(YQ_ERROR);
+        if (failBlock) {
+            failBlock(YQ_ERROR);
+        }
         return session;
     }
     YJBaseVCtr *vc = (YJBaseVCtr *)[PubilcClass topViewController];

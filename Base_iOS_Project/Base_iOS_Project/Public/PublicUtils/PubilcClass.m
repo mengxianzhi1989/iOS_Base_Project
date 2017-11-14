@@ -122,50 +122,6 @@
     return rect.size;
 }
 
-//添加全局视图
-+(void)addGlobalView:(UIView *)view withType:(YJ_GlobalView_ID)aType {
-    //注：索引值越高，视图的层级越靠近顶部.
-    view.tag = aType;
-    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    [window endEditing:YES];
-    for(int i = 0; i < window.subviews.count; i++) {
-        int viewID = (int)((UIView*)[window.subviews objectAtIndex:i]).tag;
-        if(viewID >= YJ_GView_Expand && viewID < YJ_GView_Edge){
-            if(aType < viewID) {
-                [window insertSubview:view atIndex:i];
-                return;
-            }else if(aType == viewID) {
-                //夜间模式只添加一次
-                if (aType == YJ_GView_Night) {
-                    return;
-                }
-                if (aType == YJ_GView_UnlockV) {
-                    NSArray<UIViewController *> *vcs =  window.rootViewController.childViewControllers;
-//                    for (UIViewController *control in vcs) {
-//                        if ([control isKindOfClass:[YJGesturesPasswordVCtr class]]||[control isKindOfClass:[TouchIDVCtr class]]) {
-//                            [control removeFromParentViewController];
-//                        }
-//                    }
-                    [PubilcClass removeGlobalView:YJ_GView_UnlockV];
-                }
-            }
-        }
-    }
-    [window addSubview:view];
-}
-
-//移除全局视图
-+(void)removeGlobalView:(YJ_GlobalView_ID)aType {
-    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    UIView* view = [window viewWithTag:aType];
-    if (view != nil) {
-        if (aType == YJ_GView_UnlockV && view.subviews) {
-            [view removeAllSubviews];
-        }
-        [view removeFromSuperview];
-    }
-}
-
 //查看是否存在全局视图 by id
 +(BOOL)isExitingGolbalView:(YJ_GlobalView_ID)aType {
     BOOL isExit = NO;

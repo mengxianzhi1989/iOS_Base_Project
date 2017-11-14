@@ -50,12 +50,6 @@ typedef enum
 +(CGSize)string:(NSString*)aStr withFont:(CGFloat)aSize withMaxWidth:(CGFloat)aMaxWidth;
 +(CGSize)stringSize:(NSString *)str font:(UIFont *)font color:(UIColor *)color width:(CGFloat)width;
 
-//添加全局视图 //注：索引值越高，视图的层级越靠近顶部.
-//+(void)addGlobalView:(UIView *)view withType:(YJ_GlobalView_ID)aType;
-////移除全局视图
-//+(void)removeGlobalView:(YJ_GlobalView_ID)aType;
-////查看是否存在全局视图 by id
-//+(BOOL)isExitingGolbalView:(YJ_GlobalView_ID)aType;
 //获取当前时间的时间戳（1970）
 +(NSString*)currentTimestampSince1970;
 //缓存数据到cache目录

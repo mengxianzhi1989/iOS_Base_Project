@@ -149,9 +149,13 @@ typedef void (^AFURLSessionTaskCompletionHandler)(NSURLResponse *response, id re
             [weakTask suspend];
         };
         if ([progress respondsToSelector:@selector(setResumingHandler:)]) {
-            progress.resumingHandler = ^{
-                [weakTask resume];
-            };
+            if (@available(iOS 9.0, *)) {
+                progress.resumingHandler = ^{
+                    [weakTask resume];
+                };
+            } else {
+                // Fallback on earlier versions
+            }
         }
         [progress addObserver:self
                    forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
@@ -236,7 +240,7 @@ didCompleteWithError:(NSError *)error
             if (serializationError) {
                 userInfo[AFNetworkingTaskDidCompleteErrorKey] = serializationError;
             }
-#warning sleepForTimeInterval:5
+//#warning sleepForTimeInterval:10
             [NSThread sleepForTimeInterval:5];
             dispatch_group_async(manager.completionGroup ?: url_session_manager_completion_group(), manager.completionQueue ?: dispatch_get_main_queue(), ^{
                 if (self.completionHandler) {
