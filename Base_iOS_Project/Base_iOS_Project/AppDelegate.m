@@ -13,7 +13,9 @@
 #import "WeComeController.h"
 
 @interface AppDelegate ()<UITabBarControllerDelegate>
-
+{
+    Reachability *_internetReach;
+}
 @property (strong,nonatomic) ViewControllerFirst *mDisconverVCtr;
 @property (strong,nonatomic) ViewControllerSecond *mMoneyVCtr;
 @property(nonatomic, strong) UIImageView *IconImg;
@@ -28,24 +30,28 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     [self adjustFirstLogin];
+    [self netWork];
     [self.window makeKeyAndVisible];
     return YES;
 }
 
 #pragma mark 是否是第一次登录
 -(void)adjustFirstLogin {
-    //    NSString *key = (NSString *)kCFBundleVersionKey;
-    //    NSString *lastVersionCode = [USER_DEFAULTS objectForKey:key];
-    //    NSString *currentVersionCode = [NSBundle mainBundle].infoDictionary[key];
+    NSString *key = (NSString *)kCFBundleVersionKey;
+    NSString *lastVersionCode = [kUserDefault objectForKey:key];
+    NSString *currentVersionCode = [NSBundle mainBundle].infoDictionary[key];
+    
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     // 非第一次
-    //    if ([lastVersionCode isEqualToString:currentVersionCode]) {
-    [self initTableBar];
-    //    }else {
-    //        [USER_DEFAULTS setObject:currentVersionCode forKey:key];
-    //        [USER_DEFAULTS synchronize];
-    //        WeComeController *weComeVc = [[WeComeController alloc]initWithNibName:@"WeComeController" bundle:nil];
-    //        [self.window setRootViewController:weComeVc];
-    //    }
+    if ([lastVersionCode isEqualToString:currentVersionCode]) {
+        [self initTableBar];
+    }else {
+        [kUserDefault setObject:currentVersionCode forKey:key];
+        [kUserDefault synchronize];
+        WeComeController *weComeVc = [[WeComeController alloc]initWithNibName:@"WeComeController" bundle:nil];
+        [self.window setRootViewController:weComeVc];
+    }
 }
 
 
@@ -103,6 +109,45 @@
 - (void)changeTableBarIndex:(int)index{
     [mTabBarVCtr setSelectedIndex:index];
     mTabBarVCtr.selectedIndex = index;
+}
+
++ (AppDelegate *)getAppDelegate{
+    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+
+#pragma mark - network
+- (void)reachabilityChanged:(NSNotification *)note{
+    _networkStatus = [_internetReach currentReachabilityStatus];
+    if (_networkStatus) {
+        self.connection = YES;
+    }else {
+        self.connection = NO;
+    }
+    switch (_networkStatus) {
+        case NotReachable:{}
+            break;
+        caseReachableViaWiFi:{}
+            break;
+        caseReachableViaWWAN:{}
+            break;
+        default:
+            break;
+    }
+}
+
+//检测网络
+-(void)netWork {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    _internetReach = [Reachability reachabilityForInternetConnection];
+    [_internetReach startNotifier];
+    _networkStatus = ReachableViaWWAN;
+    _networkStatus = [_internetReach currentReachabilityStatus];
+    if (self.networkStatus) {
+        self.connection = YES;
+    }else {
+        self.connection = NO;
+    }
 }
 
 @end

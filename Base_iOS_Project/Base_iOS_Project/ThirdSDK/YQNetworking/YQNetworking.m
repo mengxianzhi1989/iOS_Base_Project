@@ -114,6 +114,12 @@ static NSTimeInterval   requestTimeout = 20.f;
                        failBlock:(YQResponseFailBlock)failBlock
 {
     
+    if(![[AppDelegate getAppDelegate] connection]) {
+        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络不给力,请检查你的网络" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
+        [alert show];
+        return nil;
+    }
+    
     QFHttpUrl *httpUrl = [QFHttpUrl sharedHttpUrl];
     NSString *hostName = [httpUrl defaulthostName];
     NSString *url = [hostName stringByAppendingString:[httpUrl urlOfRequestId:requestType]];
@@ -121,11 +127,6 @@ static NSTimeInterval   requestTimeout = 20.f;
     //将session拷贝到堆中，block内部才可以获取得到session
     __block YQURLSessionTask *session = nil;
     AFHTTPSessionManager *manager = [self manager];
-    
-    if (networkStatus == YQNetworkStatusNotReachable) {
-        if (failBlock) failBlock(YQ_ERROR);
-        return session;
-    }
     
     YJBaseVCtr *vc = (YJBaseVCtr *)[PubilcClass topViewController];
     [vc initWaitViewWithString:@"加载中"];
@@ -170,6 +171,12 @@ static NSTimeInterval   requestTimeout = 20.f;
                                    params:(NSDictionary *)params
                              successBlock:(YQResponseSuccessBlock)successBlock
                                 failBlock:(YQResponseFailBlock)failBlock {
+    
+    if(![[AppDelegate getAppDelegate] connection]) {
+        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络不给力,请检查你的网络" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
+        [alert show];
+        return nil;
+    }
     
     QFHttpUrl *httpUrl = [QFHttpUrl sharedHttpUrl];
     NSString *hostName = [httpUrl defaulthostName];

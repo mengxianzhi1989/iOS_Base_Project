@@ -27,10 +27,9 @@
     nvc.delegate = self;
     return nvc;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-
 }
 
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
@@ -38,10 +37,11 @@
 }
 
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    if (navigationController.viewControllers.count == 1)
+    if (navigationController.viewControllers.count == 1){
         self.currentShowVC = Nil;
-    else
-        self.currentShowVC = viewController;
+    }else{
+       self.currentShowVC = viewController;
+    }
 }
 
 - (void)pushAnimationDidStop {
@@ -51,7 +51,6 @@
 - (void)pushViewController: (UIViewController*)controller
     animatedWithTransition: (UIViewAnimationTransition)transition {
     [self pushViewController:controller animated:NO];
-    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:TIME_TRANSITION_DURATION];
     [UIView setAnimationDelegate:self];
@@ -74,9 +73,8 @@
 }
 
 - (void)pushViewControllerFromVCtr: (UIViewController*)aFromController toVCtr:(UIViewController*)aToViewController{
-    
     self.popToVCtr = aFromController;
-    UIGraphicsBeginImageContextWithOptions(aFromController.view.bounds.size, YES, 2.0);
+   UIGraphicsBeginImageContextWithOptions(aFromController.view.bounds.size, YES, 2.0);
     [aFromController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *uiImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -117,12 +115,18 @@
     [UIView commitAnimations];
 }
 
+//是否支持左滑返回
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    DLog(@"self.currentShowVC = %@ === self.topViewController =%@",self.currentShowVC,self.topViewController);
+    return (self.currentShowVC == self.topViewController);
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     [super pushViewController:viewController animated:animated];
-    if (SYS_VER_BEYOND_AND_EQUAL_11) {
+    if (kDevice_Is_iPhoneX) {
         CGRect frame = self.tabBarController.tabBar.frame;
         frame.origin.y = [UIScreen mainScreen].bounds.size.height - frame.size.height;
-        kAppDelegate.mTabBarVCtr.tabBar.frame = frame;
+        [AppDelegate getAppDelegate].mTabBarVCtr.tabBar.frame = frame;
     }
 }
 

@@ -25,6 +25,8 @@
 #import "CLSystemHelper.h"
 #import "IQKeyboardManager.h"
 #import "MJScrollView.h"
+#import "Reachability.h"
+#import "AppDelegate.h"
 
 #endif
 

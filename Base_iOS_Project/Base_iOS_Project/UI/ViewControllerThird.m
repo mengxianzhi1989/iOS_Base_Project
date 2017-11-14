@@ -33,23 +33,25 @@
     [self.view addSubview:button];
     
 //    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
-//    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
-//        DLog(@"%@",@"success");
-//        [self clearWaitView];
-//    } failBlock:^(NSError *error) {
-//        DLog(@"%@",@"error");
-//        [self clearWaitView];
-//    }];
-    
-    
-    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
-        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
-        DLog(@"%@ --- %@",@"success",model);
+    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
+        DLog(@"%@",@"success");
+        [self showTipsMessage:@"success" withDuration:1];
         [self clearWaitView];
     } failBlock:^(NSError *error) {
-        DLog(@"%@",error);
+        DLog(@"%@",@"error");
+        [self showTipsMessage:@"error" withDuration:1];
         [self clearWaitView];
     }];
+    
+    
+//    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
+//        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
+//        DLog(@"%@ --- %@",@"success",model);
+//        [self clearWaitView];
+//    } failBlock:^(NSError *error) {
+//        DLog(@"%@",error);
+//        [self clearWaitView];
+//    }];
 }
 
 //- (void)back:(UIButton *)aBtn{

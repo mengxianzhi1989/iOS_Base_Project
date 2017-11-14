@@ -65,7 +65,6 @@
     #define kScreenWidth  [UIScreen mainScreen].bounds.size.width
     #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
-    #define kAppDelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])
     #define kUserDefault [NSUserDefaults standardUserDefaults]
 
     //获取当前手机系统版本

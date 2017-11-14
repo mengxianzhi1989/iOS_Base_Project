@@ -12,8 +12,12 @@
 
 @property (strong,nonatomic)UITabBarController *mTabBarVCtr;
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, assign) NetworkStatus networkStatus;
+@property (nonatomic, assign) BOOL connection;
 
 - (void)changeTableBarIndex:(int)index;
+- (void)initTableBar;
++ (AppDelegate *)getAppDelegate;
 
 @end
 
