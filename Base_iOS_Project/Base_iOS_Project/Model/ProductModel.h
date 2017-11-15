@@ -337,7 +337,7 @@
 
 @property (strong,nonatomic) NSString *disabled;
 @property (strong,nonatomic) NSString *myInfo;
-@property (strong,nonatomic) NSArray *rows;
+@property (strong,nonatomic) NSArray<RowModel *> *rows;
 
 
 @end

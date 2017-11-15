@@ -96,8 +96,6 @@
     [super viewWillDisappear:animated];
 }
 
-
-#pragma mark -- mNavImgView
 -(UIImageView *)mNavImgView {
     if (!mNavImgView) {
         //隐藏nav
@@ -111,7 +109,6 @@
     return mNavImgView;
 }
 
-#pragma mark -- WaitView
 -(void)initWaitView {
     [self clearWaitView];
     UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -134,7 +131,7 @@
     CGSize textSize = [PubilcClass string:aStr withFont:13 withMaxWidth:80];
     UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120,120)];
     mWaitBgView = bgview;
-
+    
     [mWaitBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6f]];
     [mWaitBgView.layer setMasksToBounds:YES];
     [mWaitBgView.layer setCornerRadius:3.0f];
@@ -144,7 +141,7 @@
     [mWaitBgView addSubview:activityIndicator];
     activityIndicator.color = [UIColor whiteColor];
     [activityIndicator startAnimating];
-
+    
     UILabel* tipsLabel = [[UILabel alloc] init];
     [tipsLabel setText:aStr];
     [tipsLabel setFont:[UIFont systemFontOfSize:13]];
@@ -163,17 +160,13 @@
 }
 
 -(void)initBlockWaitWithString:(NSString*)aStr {
-//    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
-//        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
-//    }
     UIView* bgView = [[UIView alloc] initWithFrame:[UIScreen mainScreen ].bounds];
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
     mWaitBgView = bgView;
-//    [PubilcClass addGlobalView:bgView withType:YJ_GView_WaitBg];
     [self.view addSubview:bgView];
     CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
     UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,120,120)];
-
+    
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
     [realBgView.layer setMasksToBounds:YES];
     [realBgView.layer setCornerRadius:10.0f];
@@ -185,7 +178,7 @@
     activityIndicator.color = [UIColor whiteColor];
     [activityIndicator startAnimating];
     [realBgView addSubview:activityIndicator];
-
+    
     //提示文字
     if (aStr != nil && [aStr length]>0) {
         UILabel* tipsLabel = [[UILabel alloc] init];
@@ -200,13 +193,9 @@
 }
 
 -(void)initBlockWaitUnderNavigationaBarWithString:(NSString*)aStr {
-//    if ([PubilcClass isExitingGolbalView:YJ_GView_WaitBg]) {
-//        [PubilcClass removeGlobalView:YJ_GView_WaitBg];
-//    }
     UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0, mNavImgView.bottom, kScreenWidth, kScreenHeight- mNavImgView.bottom)];
     mWaitBgView = bgView;
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
-//    [PubilcClass addGlobalView:bgView withType:YJ_GView_WaitBg];
     [self.view addSubview:bgView];
     
     CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
@@ -240,8 +229,7 @@
 -(void)showTipsMessage:(NSString *)aMessage withDuration:(NSTimeInterval)aDuration offSetY:(CGFloat)offsety
 {
     [self removeTipsView];
-    //原来宽度为152，目前增加40，若修改宽度修改40即可，至于为什么原来写152已无法考究了。
-    float mTipsViewWidth = 152 + 40;
+    float mTipsViewWidth = 150;
     UIWindow * window = [UIApplication sharedApplication].keyWindow;
     UIView *showview = [[UIView alloc]init];
     self.mTipsMessageBgView = showview;
@@ -296,8 +284,7 @@
     UIImage* backimage = nil;
     if(image) {
         backimage = image;
-    }
-    else {
+    }else {
         backimage = [UIImage imageNamed:@"back_arrow"];
     }
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, self.mIncrease, self.mNavBarH, self.mNavBarH)];
@@ -305,7 +292,7 @@
     [backButton setImage:backimage forState:UIControlStateNormal];
     [backButton setImage:backimage  forState:UIControlStateHighlighted];
     backButton.imageEdgeInsets = UIEdgeInsetsMake(9, 0, 9, 0);
-    [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.mNavImgView addSubview:backButton];
 }
 
@@ -313,17 +300,6 @@
     UIButton *btn = (UIButton *)[self.mNavImgView viewWithTag:919];
     [btn setImage:aImg  forState:UIControlStateNormal];
     [btn setImage:aPressImg  forState:UIControlStateHighlighted];
-}
-
--(void)back:(UIButton *)aBtn {
-    [YQNetworking cancleAllRequest];
-    [self clearWaitView];
-    if (self.navigationController != nil ) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    if(self.successHandel) {
-        self.successHandel();
-    }
 }
 
 -(void)initTitleView:(NSString *)aTitleStr textColor:(UIColor *)textColor {
@@ -337,9 +313,8 @@
     self.mTitleStr = aTitleStr;
     label.text = mTitleStr;
     if(textColor){
-         label.textColor = textColor;
-    }
-    else {
+        label.textColor = textColor;
+    }else {
         label.textColor = UIColorFromRGB(0x313131);
     }
     label.font = fontS;
@@ -370,4 +345,34 @@
     [alertV show];
 }
 
+#pragma mark - 监听左滑返回事件
+- (void)willMoveToParentViewController:(UIViewController*)parent{
+    [super willMoveToParentViewController:parent];
+    DLog(@"%s,%@",__FUNCTION__,parent);
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    DLog(@"%s,%@",__FUNCTION__,parent);
+    if(!parent){
+        NSLog(@"左滑返回成功");
+        if(self.successHandel) {
+            self.successHandel();
+        }
+    }
+}
+
+#pragma mark - 返回
+-(void)backAction:(UIButton *)aBtn {
+    [YQNetworking cancleAllRequest];
+    [self clearWaitView];
+    if (self.navigationController != nil ) {
+        [self.navigationController popViewControllerAnimated:YES];
+        if(self.successHandel) {
+            self.successHandel();
+        }
+    }
+}
+
 @end
+

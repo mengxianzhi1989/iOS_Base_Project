@@ -14,7 +14,6 @@
 //网络请求状态标示码
 @property (assign, nonatomic) NSInteger status;
 @property (assign, nonatomic) NSInteger errcode;
-@property (strong, nonatomic) NSString *errmsg;
 //网络请求状态内容
 @property (strong, nonatomic) NSString* msg;
 

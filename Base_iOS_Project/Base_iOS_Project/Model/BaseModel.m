@@ -9,7 +9,5 @@
 #import "BaseModel.h"
 
 @implementation BaseModel
-@synthesize status;
-@synthesize msg;
 
 @end

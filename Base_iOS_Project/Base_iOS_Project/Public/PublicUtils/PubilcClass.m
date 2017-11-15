@@ -40,7 +40,7 @@
 }
 
 +(NSString *)formatToCurrency:(double)v {
-  return [self formatToCurrency:v decimalPoint:2];
+    return [self formatToCurrency:v decimalPoint:2];
 }
 
 +(NSString *)formatNSNumberToCurrency:(NSNumber *)v {
@@ -115,7 +115,7 @@
 {
     NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
     paragraph.lineBreakMode = NSLineBreakByTruncatingTail;
-
+    
     CGRect rect = [str boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{
                                                                                                                                    NSFontAttributeName: font,NSStrokeColorAttributeName: color, NSParagraphStyleAttributeName: paragraph
                                                                                                                                    } context:nil];
@@ -252,20 +252,20 @@
 
 + (NSString*)weekdayStringFromDate:(NSDate*)inputDate {
     NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"星期日", @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", nil];
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
     [calendar setTimeZone: timeZone];
-    NSCalendarUnit calendarUnit = NSWeekdayCalendarUnit;
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
     NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:inputDate];
     return [weekdays objectAtIndex:theComponents.weekday];
 }
 + (NSString*)weekdayStringFromTimeStamp:(long long)aTimeStamp {
     NSDate *inputDate = [NSDate dateWithTimeIntervalSince1970:aTimeStamp/1000];
     NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"星期日", @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", nil];
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
     [calendar setTimeZone: timeZone];
-    NSCalendarUnit calendarUnit = NSWeekdayCalendarUnit;
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
     NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:inputDate];
     return [weekdays objectAtIndex:theComponents.weekday];
 }
@@ -304,7 +304,7 @@
 }
 +(UIButton *)createBottomBtn:(NSString *)title cornerRadius:(CGFloat)radius frame:(CGRect )frame targe:(id)targe method:(SEL)method
 {
-   UIButton *btn= [self creatSubmitBtn:title targe:targe method:method];
+    UIButton *btn= [self creatSubmitBtn:title targe:targe method:method];
     btn.layer.cornerRadius = radius;
     btn.frame = frame;
     return btn;

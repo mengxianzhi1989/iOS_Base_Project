@@ -40,7 +40,7 @@
     if (navigationController.viewControllers.count == 1){
         self.currentShowVC = Nil;
     }else{
-       self.currentShowVC = viewController;
+        self.currentShowVC = viewController;
     }
 }
 
@@ -74,7 +74,7 @@
 
 - (void)pushViewControllerFromVCtr: (UIViewController*)aFromController toVCtr:(UIViewController*)aToViewController{
     self.popToVCtr = aFromController;
-   UIGraphicsBeginImageContextWithOptions(aFromController.view.bounds.size, YES, 2.0);
+    UIGraphicsBeginImageContextWithOptions(aFromController.view.bounds.size, YES, 2.0);
     [aFromController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *uiImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -131,3 +131,4 @@
 }
 
 @end
+

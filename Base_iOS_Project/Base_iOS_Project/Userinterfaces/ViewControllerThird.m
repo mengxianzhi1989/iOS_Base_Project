@@ -10,7 +10,8 @@
 #import "AppDelegate.h"
 #import "ProductModel.h"
 #import "AFHTTPSessionManager.h"
-
+#import "NewsLatestModel.h"
+#import "AFNetworking.h"
 
 @interface ViewControllerThird ()
 
@@ -23,35 +24,37 @@
     [super viewDidLoad];
     [self initBackButton];
     [self initTitleView:@"ViewControllerThird"];
-
-//    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
-
+    
+    //    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
+    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setFrame:CGRectMake(0, 300, 300, 100)];
     [button setBackgroundColor:[UIColor redColor]];
     [button addTarget:self action:@selector(setTaskDidComplete11) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
-//    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
-    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
-        DLog(@"%@",@"success");
-        [self showTipsMessage:@"success" withDuration:1];
+    //    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
+    //    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
+    //        DLog(@"%@",@"success");
+    //        NewsLatestModel *lateModel = [NewsLatestModel yy_modelWithJSON:response];
+    ////        NSString *image = [[[lateModel.stories objectAtIndex:0] images] objectAtIndex:0];
+    //        [self showTipsMessage:MyFormat(@"%@",lateModel) withDuration:1];
+    //        [self clearWaitView];
+    //    } failBlock:^(NSError *error) {
+    //        DLog(@"%@",@"error");
+    //        [self showTipsMessage:@"error" withDuration:1];
+    //        [self clearWaitView];
+    //    }];
+    
+    
+    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
+        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
+        DLog(@"%@ --- %@",@"success",[model.rows objectAtIndex:0].picUrl);
         [self clearWaitView];
     } failBlock:^(NSError *error) {
-        DLog(@"%@",@"error");
-        [self showTipsMessage:@"error" withDuration:1];
+        DLog(@"%@",error);
         [self clearWaitView];
     }];
-    
-    
-//    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
-//        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
-//        DLog(@"%@ --- %@",@"success",model);
-//        [self clearWaitView];
-//    } failBlock:^(NSError *error) {
-//        DLog(@"%@",error);
-//        [self clearWaitView];
-//    }];
 }
 
 //- (void)back:(UIButton *)aBtn{
@@ -67,3 +70,4 @@
 
 
 @end
+
