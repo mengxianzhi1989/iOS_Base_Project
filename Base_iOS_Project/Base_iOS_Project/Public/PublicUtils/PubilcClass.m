@@ -9,7 +9,7 @@
 #import <sys/utsname.h>
 #import <CommonCrypto/CommonHMAC.h>
 #import <CommonCrypto/CommonCryptor.h>
-#import "PublicUtil.h"
+#import "PubilcClass.h"
 #include <sys/sysctl.h>
 
 #define TOAST_DURATION 2
@@ -17,10 +17,10 @@
 #define THOUSAND_SEPARATOR (USFormat ? @"," : @".")
 #define DECIMAL_SEPARATOR (USFormat ? @"." : @",")
 
-//#define TEST_CLIENT_PW "ZKd6LJhCL5Jz6qbjmpaG"
+#define TEST_CLIENT_PW "ZKd6LJhCL5Jz6qbjmpaG"
 #define PI 3.14159265
 
-@implementation PublicUtil
+@implementation PubilcClass
 
 
 +(NSString *)phoneNumberTranferToStart:(NSString *)phone {
@@ -120,6 +120,18 @@
                                                                                                                                    NSFontAttributeName: font,NSStrokeColorAttributeName: color, NSParagraphStyleAttributeName: paragraph
                                                                                                                                    } context:nil];
     return rect.size;
+}
+
+//查看是否存在全局视图 by id
++(BOOL)isExitingGolbalView:(YJ_GlobalView_ID)aType {
+    BOOL isExit = NO;
+    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    UIView* view = [window viewWithTag:aType];
+    if (view != nil) {
+        isExit = YES;
+    }
+    
+    return isExit;
 }
 
 +(NSString*)currentTimestampSince1970 {
@@ -285,7 +297,7 @@
     btn.backgroundColor = [UIColor clearColor];
     [btn setTitle:title forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:18.0];
-    [btn setBackgroundImage: [PublicUtil createImageWithColor:rgbColor(70, 165, 246)] forState:UIControlStateNormal];
+    [btn setBackgroundImage: [PubilcClass createImageWithColor:rgbColor(70, 165, 246)] forState:UIControlStateNormal];
     [btn setTitleColor:rgbColor(255, 255, 255) forState:UIControlStateNormal];
     [btn addTarget:targe action:method forControlEvents:UIControlEventTouchUpInside];
     return btn;
@@ -352,13 +364,13 @@
     UIImageView *imageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
     imageV.image = image;
     [imageV sizeToFit];
-    CGSize size = [PublicUtil string:text withFontSize:fontSize];
+    CGSize size = [PubilcClass string:text withFontSize:fontSize];
     float height = imageV.height > size.height?imageV.height : size.height;
     UIView *backV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, imageV.width+distance+size.width, height)];
     [imageV setTop:0.5*(backV.height-imageV.height)];
     backV.backgroundColor = backColor;
     [backV addSubview:imageV];
-    UILabel *label = [PublicUtil createLabel:[UIFont systemFontOfSize:fontSize] color:textColor];
+    UILabel *label = [PubilcClass createLabel:[UIFont systemFontOfSize:fontSize] color:textColor];
     label.frame = CGRectMake(imageV.right+distance, 0, size.width, height);
     label.text = text;
     [backV addSubview:label];
@@ -367,8 +379,8 @@
 
 +(UILabel *)createSizeFitLabelWithText:(NSString *)text FontSize:(float)fontSize  textColor:(UIColor *)textColor
 {
-    CGSize size = [PublicUtil string:text withFontSize:fontSize];
-    UILabel *label = [PublicUtil createLabel:[UIFont systemFontOfSize:fontSize] color:textColor];
+    CGSize size = [PubilcClass string:text withFontSize:fontSize];
+    UILabel *label = [PubilcClass createLabel:[UIFont systemFontOfSize:fontSize] color:textColor];
     label.frame = CGRectMake(0, 0, size.width, size.height);
     label.text = text;
     return label;

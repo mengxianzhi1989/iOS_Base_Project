@@ -2,7 +2,7 @@
 //  ZSJudgeResolution.h
 //  ZolSoft
 //
-//  Created by mengxianzhi on 16-10-29.
+//  Created by lxy on 14-10-29.
 //
 //
 
@@ -10,13 +10,13 @@
 
 typedef NS_ENUM(NSInteger, CLDeviceResolution) {
     RES_None,
+    //2X
     RES_640X960_2X,         //iphone 4、4S
     RES_640X1136_2X,        //iphone 5、5S
     RES_750X1334_2X,        //iphone 6、6S、7
     RES_1536X2048_2X,       //ipad Retina and normal
     //3x
     RES_1242X2208_3X,       //iphone 6P、6SP、7P
-    RES_1125X2436_3X,       //iphone x
 };
 
 #define CURRENT_RES [CLSystemHelper currentResolution]
@@ -28,13 +28,15 @@ typedef NS_ENUM(NSInteger, CLDeviceResolution) {
 
 #define IS_RES_3X CURRENT_RES >= RES_1242X2208_3X
 
+//当前版本
+#define IOS_VERSION [CLSystemHelper deviceSystemMajorVersion]
+
 #define CGFLOAT_IS_EQUAL(a,b) (fabs((a) - (b)) < 0.00001)
 
 
 @interface CLSystemHelper : NSObject
 
 + (NSUInteger)deviceSystemMajorVersion;    //iOS 系统版本 9
-+ (NSString *)appVersion;                  //获取App版本号
 + (NSString *)deviceSystem;                //具体版本 9.3.5
 + (NSString *)deviceType;                  //设备类型 iPhone8,1
 + (NSString *)macAddress;                  //获取当前设备下的mac地址
@@ -49,15 +51,12 @@ typedef NS_ENUM(NSInteger, CLDeviceResolution) {
 
 + (CGFloat)lineHigh05;
 
-//固定高度 算宽度
 + (CGSize)sizeWithText:(NSString *)text height:(CGFloat)height font:(UIFont *)font;
 + (CGSize)sizeWithText:(NSString *)text height:(CGFloat)height fontSize:(CGFloat)fontSize;
-
-//固定宽度 算高度
-+ (CGSize)sizeWithText:(NSString *)text width:(CGFloat)width fontSize:(CGFloat)fontSize;
 + (CGSize)sizeWithText:(NSString *)text width:(CGFloat)width font:(UIFont *)font;
-
-
++ (CGSize)sizeWithText:(NSString *)text width:(CGFloat)width fontSize:(CGFloat)fontSize;
++ (CGSize)sizeWithText:(NSString *)text size:(CGSize)size fontSize:(CGFloat)fontSize;
++ (CGSize)sizeWithText:(NSString *)text size:(CGSize)size font:(UIFont *)font;
 + (CGSize)sizeWithAttributedText:(NSAttributedString *)text width:(CGFloat)width;
 + (CGSize)sizeWithAttributedText:(NSAttributedString *)text height:(CGFloat)height;
 

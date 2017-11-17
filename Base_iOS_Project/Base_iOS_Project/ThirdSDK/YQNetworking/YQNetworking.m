@@ -12,24 +12,19 @@
 #import "YQNetworking+RequestManager.h"
 #import "YQCacheManager.h"
 
+#define YQ_ERROR_IMFORMATION @"网络出现错误，请检查网络连接"
+
+#define YQ_ERROR [NSError errorWithDomain:@"com.hyq.YQNetworking.ErrorDomain" code:-999 userInfo:@{ NSLocalizedDescriptionKey:YQ_ERROR_IMFORMATION}]
 
 static NSMutableArray   *requestTasksPool;
 
-static NSMutableDictionary *headers;
+static NSDictionary     *headers;
 
-//static YQNetworkStatus  networkStatus;
+static YQNetworkStatus  networkStatus;
 
-static NSTimeInterval  requestTimeout = 40.f;
-@interface YQNetworking()
-
-@end
+static NSTimeInterval   requestTimeout = 20.f;
 
 @implementation YQNetworking
-
-+ (void)load{
-    headers = [NSMutableDictionary dictionary];
-}
-
 #pragma mark - manager
 + (AFHTTPSessionManager *)manager {
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
@@ -38,30 +33,69 @@ static NSTimeInterval  requestTimeout = 40.f;
     
     //默认解析模式
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     //配置请求序列化
-//    AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializer];
-//    [serializer setRemovesKeysWithNullValues:YES];
+    AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializer];
+    
+    [serializer setRemovesKeysWithNullValues:YES];
     
     manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
     
-//    [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-//    manager.requestSerializer.timeoutInterval = requestTimeout;
-//    [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    manager.requestSerializer.timeoutInterval = requestTimeout;
     
     for (NSString *key in headers.allKeys) {
         if (headers[key] != nil) {
             [manager.requestSerializer setValue:headers[key] forHTTPHeaderField:key];
         }
     }
+    
     //配置响应序列化
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",@"text/html",@"text/json",@"text/plain",@"text/javascript",@"text/xml",@"image/*",@"application/octet-stream",@"application/zip"]];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
+                                                                              @"text/html",
+                                                                              @"text/json",
+                                                                              @"text/plain",
+                                                                              @"text/javascript",
+                                                                              @"text/xml",
+                                                                              @"image/*",
+                                                                              @"application/octet-stream",
+                                                                              @"application/zip"]];
+    
+    [self checkNetworkStatus];
     
     //每次网络请求的时候，检查此时磁盘中的缓存大小，阈值默认是40MB，如果超过阈值，则清理LRU缓存,同时也会清理过期缓存，缓存默认SSL是7天，磁盘缓存的大小和SSL的设置可以通过该方法[YQCacheManager shareManager] setCacheTime: diskCapacity:]设置
     [[YQCacheManager shareManager] clearLRUCache];
     
     return manager;
+}
+
+#pragma mark - 检查网络
++ (void)checkNetworkStatus {
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    
+    [manager startMonitoring];
+    
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        
+        switch (status) {
+            case AFNetworkReachabilityStatusNotReachable:
+                networkStatus = YQNetworkStatusNotReachable;
+                break;
+            case AFNetworkReachabilityStatusUnknown:
+                networkStatus = YQNetworkStatusUnknown;
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                networkStatus = YQNetworkStatusReachableViaWWAN;
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                networkStatus = YQNetworkStatusReachableViaWiFi;
+                break;
+            default:
+                networkStatus = YQNetworkStatusUnknown;
+                break;
+        }
+        
+    }];
 }
 
 + (NSMutableArray *)allTasks {
@@ -90,24 +124,16 @@ static NSTimeInterval  requestTimeout = 40.f;
     NSString *hostName = [httpUrl defaulthostName];
     NSString *url = [hostName stringByAppendingString:[httpUrl urlOfRequestId:requestType]];
     
-    //设置请求Header
-//    if (requestType == Querybycondition) {
-//        [self configHttpHeader:@{@"application/json; charset=utf-8":@"Contsetent-Type"}];
-//    }
-//    //添加其他信息
-//    if ([AppDelegate isLogin]) {
-//        [self configHttpHeader:@{@"key111":@"value111"}];
-//    }
-
     //将session拷贝到堆中，block内部才可以获取得到session
     __block YQURLSessionTask *session = nil;
     AFHTTPSessionManager *manager = [self manager];
     
-    YJBaseVCtr *vc = (YJBaseVCtr *)[PublicUtil topViewController];
+    YJBaseVCtr *vc = (YJBaseVCtr *)[PubilcClass topViewController];
     [vc initWaitViewWithString:@"加载中"];
     session = [manager GET:url
                 parameters:params
                   progress:^(NSProgress * _Nonnull downloadProgress) {
+                      
                       
                   } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                       if (successBlock) {
@@ -120,6 +146,7 @@ static NSTimeInterval  requestTimeout = 40.f;
                           failBlock(error);
                       };
                       [[self allTasks] removeObject:session];
+                      
                   }];
     if ([self haveSameRequestInTasksPool:session]) {
         //取消新请求
@@ -150,24 +177,21 @@ static NSTimeInterval  requestTimeout = 40.f;
         [alert show];
         return nil;
     }
+    
     QFHttpUrl *httpUrl = [QFHttpUrl sharedHttpUrl];
     NSString *hostName = [httpUrl defaulthostName];
     NSString *url = [hostName stringByAppendingString:[httpUrl urlOfRequestId:requestType]];
     
     __block YQURLSessionTask *session = nil;
-    
-//    //设置请求Header
-//    if (requestType == Querybycondition) {
-//        [self configHttpHeader:@{@"application/json; charset=utf-8":@"Contsetent-Type"}];
-//    }
-//    //添加其他信息
-//    if ([AppDelegate isLogin]) {
-//        [self configHttpHeader:@{@"key111":@"value111"}];
-//    }
-
     AFHTTPSessionManager *manager = [self manager];
     
-    YJBaseVCtr *vc = (YJBaseVCtr *)[PublicUtil topViewController];
+    if (networkStatus == YQNetworkStatusNotReachable) {
+        if (failBlock) {
+            failBlock(YQ_ERROR);
+        }
+        return session;
+    }
+    YJBaseVCtr *vc = (YJBaseVCtr *)[PubilcClass topViewController];
     [vc initWaitViewWithString:@"加载中"];
     session = [manager POST:url
                  parameters:params
@@ -175,20 +199,15 @@ static NSTimeInterval  requestTimeout = 40.f;
                        
                    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                        if (successBlock){
-                           NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                           successBlock(dictionary);
+                           successBlock(responseObject);
                        }
                        if ([[self allTasks] containsObject:session]) {
                            [[self allTasks] removeObject:session];
                        }
+                       
                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                        if (failBlock) {
                            failBlock(error);
-                       }
-                       if (error.code == -1011) {
-                           DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"请求超时" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
-                           [alert show];
-                           return;
                        }
                        [[self allTasks] removeObject:session];
                    }];
@@ -213,47 +232,47 @@ static NSTimeInterval  requestTimeout = 40.f;
                           progressBlock:(YQUploadProgressBlock)progressBlock
                            successBlock:(YQResponseSuccessBlock)successBlock
                               failBlock:(YQResponseFailBlock)failBlock {
+    __block YQURLSessionTask *session = nil;
     
-    if(![[AppDelegate getAppDelegate] connection]) {
-        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络不给力,请检查你的网络" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
-        [alert show];
-        return nil;
+    AFHTTPSessionManager *manager = [self manager];
+    
+    if (networkStatus == YQNetworkStatusNotReachable) {
+        if (failBlock) failBlock(YQ_ERROR);
+        return session;
     }
     
-    __block YQURLSessionTask *session = nil;
-    AFHTTPSessionManager *manager = [self manager];
     session = [manager POST:url
                  parameters:nil
-    constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-              NSString *fileName = nil;
+  constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+      NSString *fileName = nil;
       
-              NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-              formatter.dateFormat = @"yyyyMMddHHmmss";
+      NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+      formatter.dateFormat = @"yyyyMMddHHmmss";
       
-              NSString *day = [formatter stringFromDate:[NSDate date]];
+      NSString *day = [formatter stringFromDate:[NSDate date]];
       
-              fileName = [NSString stringWithFormat:@"%@.%@",day,type];
+      fileName = [NSString stringWithFormat:@"%@.%@",day,type];
       
-              [formData appendPartWithFileData:data name:name fileName:fileName mimeType:mimeType];
+      [formData appendPartWithFileData:data name:name fileName:fileName mimeType:mimeType];
       
-          } progress:^(NSProgress * _Nonnull uploadProgress) {
-              if (progressBlock) progressBlock (uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
-              
-          } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-              if (successBlock) successBlock(responseObject);
-              [[self allTasks] removeObject:session];
-              
-          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-              if (failBlock) failBlock(error);
-              [[self allTasks] removeObject:session];
-              
-          }];
+  } progress:^(NSProgress * _Nonnull uploadProgress) {
+      if (progressBlock) progressBlock (uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
+      
+  } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+      if (successBlock) successBlock(responseObject);
+      [[self allTasks] removeObject:session];
+      
+  } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+      if (failBlock) failBlock(error);
+      [[self allTasks] removeObject:session];
+      
+  }];
+
     
     [session resume];
     
-    if (session) {
-        [[self allTasks] addObject:session];
-    }
+    if (session) [[self allTasks] addObject:session];
+    
     return session;
 }
 
@@ -267,9 +286,8 @@ static NSTimeInterval  requestTimeout = 40.f;
                       successBlock:(YQMultUploadSuccessBlock)successBlock
                          failBlock:(YQMultUploadFailBlock)failBlock {
     
-    if(![[AppDelegate getAppDelegate] connection]) {
-        DQAlertView *alert = [[DQAlertView alloc]initWithTitle:@"网络不给力,请检查你的网络" message:nil cancelButtonTitle:@"确定" otherButtonTitle:nil];
-        [alert show];
+    if (networkStatus == YQNetworkStatusNotReachable) {
+        if (failBlock) failBlock(@[YQ_ERROR]);
         return nil;
     }
     
@@ -309,12 +327,14 @@ static NSTimeInterval  requestTimeout = 40.f;
                                 
                                 [sessions removeObject:session];
                             }];
+        
         [session resume];
-        if (session) {
-            [sessions addObject:session];
-        }
+        
+        if (session) [sessions addObject:session];
     }
+    
     [[self allTasks] addObjectsFromArray:sessions];
+    
     dispatch_group_notify(uploadGroup, dispatch_get_main_queue(), ^{
         if (responses.count > 0) {
             if (successBlock) {
@@ -324,6 +344,7 @@ static NSTimeInterval  requestTimeout = 40.f;
                 }
             }
         }
+        
         if (failResponse.count > 0) {
             if (failBlock) {
                 failBlock([failResponse copy]);
@@ -332,7 +353,9 @@ static NSTimeInterval  requestTimeout = 40.f;
                 }
             }
         }
+        
     });
+    
     return [sessions copy];
 }
 
@@ -386,10 +409,11 @@ static NSTimeInterval  requestTimeout = 40.f;
                   }];
     
     [session resume];
-    if (session) {
-        [[self allTasks] addObject:session];
-    }
+    
+    if (session) [[self allTasks] addObject:session];
+    
     return session;
+    
 }
 
 #pragma mark - other method
@@ -423,8 +447,7 @@ static NSTimeInterval  requestTimeout = 40.f;
 }
 
 + (void)configHttpHeader:(NSDictionary *)httpHeader {
-    [headers addEntriesFromDictionary:httpHeader];
-    DLog(@"headers %@",headers);
+    headers = httpHeader;
 }
 
 + (NSArray *)currentRunningTasks {

@@ -20,8 +20,8 @@ typedef NS_ENUM(NSUInteger, RequestType) {
     
     Getbycondition = 0,
     UserLoginType,
-    NewsLatest,
-    Querybycondition
+    NewsLatest
+
 };
 
 #endif

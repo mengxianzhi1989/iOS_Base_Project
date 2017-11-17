@@ -23,8 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initTitleView:@"选择网络"];
-    [self initBackButton];
     urlList = [[NSMutableArray alloc]init];
     urNameList = [[NSMutableArray alloc]init];
     
@@ -55,9 +53,6 @@
     [cell.contentView addSubview:urlLable];
     [cell.contentView addSubview:urlNameLable];
     
-    if ([[kUserDefault objectForKey:UrlKey] isEqualToString:urlList[indexPath.row]]) {
-        [cell.contentView setBackgroundColor:C1];
-    }
     return cell;
 }
 

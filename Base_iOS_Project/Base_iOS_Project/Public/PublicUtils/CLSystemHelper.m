@@ -43,8 +43,8 @@
         }else if (CGSizeEqualToSize(Resolution_1536X2048_2X, screenSize)|| CGSizeEqualToSize(Resolution_768X1024_1X, screenSize)) {
             _currentResolution = RES_1536X2048_2X;
         }else{
-//            NSAssert(0, @"No Resolution");
-            _currentResolution = RES_1125X2436_3X;
+            NSAssert(0, @"No Resolution");
+            _currentResolution = RES_640X1136_2X;
         }
     });
     return _currentResolution;
@@ -60,10 +60,6 @@
                                        componentsSeparatedByString:@"."] objectAtIndex:0] intValue];
     });
     return _deviceSystemMajorVersion;
-}
-
-+ (NSString *)appVersion{
-    return [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
 }
 
 + (BOOL) deviceSystemEqualToString:(NSString *)string
@@ -218,6 +214,14 @@
     return returnSize;
 }
 
++ (CGSize)sizeWithText:(NSString *)text size:(CGSize)size fontSize:(CGFloat)fontSize {
+    CGSize returnSize = CGSizeZero;
+    returnSize = [text boundingRectWithSize:CGSizeMake(size.width,size.height)
+                                    options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                 attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]}
+                                    context:nil].size;
+    return returnSize;
+}
 
 + (CGSize)sizeWithAttributedText:(NSAttributedString *)text width:(CGFloat)width {
     return [text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)

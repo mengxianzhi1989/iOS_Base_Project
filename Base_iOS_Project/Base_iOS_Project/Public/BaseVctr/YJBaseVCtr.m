@@ -128,7 +128,7 @@
 
 -(void)initWaitViewWithString:(NSString*)aStr {
     [self clearWaitView];
-    CGSize textSize = [PublicUtil string:aStr withFont:13 withMaxWidth:80];
+    CGSize textSize = [PubilcClass string:aStr withFont:13 withMaxWidth:80];
     UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120,120)];
     mWaitBgView = bgview;
     
@@ -164,7 +164,7 @@
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
     mWaitBgView = bgView;
     [self.view addSubview:bgView];
-    CGSize textSize = [PublicUtil string:aStr withFont:14 withMaxWidth:80];
+    CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
     UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,120,120)];
     
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
@@ -198,7 +198,7 @@
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
     [self.view addSubview:bgView];
     
-    CGSize textSize = [PublicUtil string:aStr withFont:14 withMaxWidth:80];
+    CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
     UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0.5*(kScreenWidth - 152), 0.5*(kScreenHeight - 152)-mNavImgView.bottom, 152, 152)];
     
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
@@ -241,7 +241,7 @@
     [window addSubview:mTipsMessageBgView];
     
     UILabel *label = [[UILabel alloc]init];
-    CGSize LabelSize = [PublicUtil string:aMessage withFont:17 withMaxWidth:mTipsViewWidth-20];
+    CGSize LabelSize = [PubilcClass string:aMessage withFont:17 withMaxWidth:mTipsViewWidth-20];
     label.frame = CGRectMake((mTipsViewWidth-LabelSize.width)/2, 10, LabelSize.width, LabelSize.height);
     label.text = aMessage;
     label.textColor = [UIColor whiteColor];
@@ -345,11 +345,17 @@
     [alertV show];
 }
 
-#pragma mark - 监听返回事件
+#pragma mark - 监听左滑返回事件
+- (void)willMoveToParentViewController:(UIViewController*)parent{
+    [super willMoveToParentViewController:parent];
+    DLog(@"%s,%@",__FUNCTION__,parent);
+}
+
 - (void)didMoveToParentViewController:(UIViewController*)parent{
     [super didMoveToParentViewController:parent];
+    DLog(@"%s,%@",__FUNCTION__,parent);
     if(!parent){
-        DLog(@"返回成功");
+        NSLog(@"左滑返回成功");
         if(self.successHandel) {
             self.successHandel();
         }
@@ -362,6 +368,9 @@
     [self clearWaitView];
     if (self.navigationController != nil ) {
         [self.navigationController popViewControllerAnimated:YES];
+        if(self.successHandel) {
+            self.successHandel();
+        }
     }
 }
 

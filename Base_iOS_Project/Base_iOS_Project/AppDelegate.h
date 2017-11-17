@@ -18,7 +18,6 @@
 - (void)changeTableBarIndex:(int)index;
 - (void)initTableBar;
 + (AppDelegate *)getAppDelegate;
-+ (BOOL)isLogin;
 
 @end
 

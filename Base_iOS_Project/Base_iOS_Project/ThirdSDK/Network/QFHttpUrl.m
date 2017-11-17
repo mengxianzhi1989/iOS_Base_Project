@@ -94,10 +94,6 @@ static QFHttpUrl *sharedHttpUrl = nil;
             [strTmp appendFormat:@"%@",@"/api/4/news/latest"];
         }
             break;
-        case Querybycondition:
-        {
-            [strTmp appendFormat:@"%@",@"/info/cargoInfo/querybycondition.shtml"];
-        }
         default:
             break;
     }
