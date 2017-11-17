@@ -7,7 +7,7 @@
 //
 
 #import "YJBaseVCtr.h"
-
+//增加测试代码
 @interface ViewControllerThird : YJBaseVCtr
-
+///接口接口就
 @end
