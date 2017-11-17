@@ -17,7 +17,7 @@
 #define THOUSAND_SEPARATOR (USFormat ? @"," : @".")
 #define DECIMAL_SEPARATOR (USFormat ? @"." : @",")
 
-#define TEST_CLIENT_PW "ZKd6LJhCL5Jz6qbjmpaG"
+//#define TEST_CLIENT_PW "ZKd6LJhCL5Jz6qbjmpaG"
 #define PI 3.14159265
 
 @implementation PubilcClass
@@ -120,18 +120,6 @@
                                                                                                                                    NSFontAttributeName: font,NSStrokeColorAttributeName: color, NSParagraphStyleAttributeName: paragraph
                                                                                                                                    } context:nil];
     return rect.size;
-}
-
-//查看是否存在全局视图 by id
-+(BOOL)isExitingGolbalView:(YJ_GlobalView_ID)aType {
-    BOOL isExit = NO;
-    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    UIView* view = [window viewWithTag:aType];
-    if (view != nil) {
-        isExit = YES;
-    }
-    
-    return isExit;
 }
 
 +(NSString*)currentTimestampSince1970 {
