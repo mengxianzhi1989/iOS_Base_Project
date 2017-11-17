@@ -29,6 +29,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+//    [NSThread sleepForTimeInterval:3];
     [self adjustFirstLogin];
     [self netWork];
     [self.window makeKeyAndVisible];
@@ -39,10 +40,10 @@
 -(void)adjustFirstLogin {
     NSString *key = (NSString *)kCFBundleVersionKey;
     NSString *lastVersionCode = [kUserDefault objectForKey:key];
-    NSString *currentVersionCode = [NSBundle mainBundle].infoDictionary[key];
-    
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSString *currentVersionCode = [CLSystemHelper appVersion];
+    NSString *str = @"付款多少九分裤的就番窠倒臼萨芬空间的就分开的煎熬付款就房间卡大家反馈的房间卡大家反馈的积分卡大姐夫";
+    UIFont *font=[UIFont systemFontOfSize:14];
+//    CGSize size = [CLSystemHelper sizeWithText:str size:CGSizeMake(100, 20) fontSize:16];
     // 非第一次
     if ([lastVersionCode isEqualToString:currentVersionCode]) {
         [self initTableBar];
@@ -77,7 +78,7 @@
     mTabBarVCtr.viewControllers = [NSArray arrayWithObjects:moneyNCtr, discoverNCtr, nil];
     
     UITabBar *tabBar = mTabBarVCtr.tabBar;
-    UIImage *image = [PubilcClass createImageWithColor:UIColorFromRGB(0xfbfcfc)];
+    UIImage *image = [PublicUtil createImageWithColor:UIColorFromRGB(0xfbfcfc)];
     tabBar.backgroundImage = image;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
@@ -155,5 +156,8 @@
     }
 }
 
++ (BOOL)isLogin{
+    return NO;
+}
 @end
 

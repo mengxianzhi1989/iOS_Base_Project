@@ -24,7 +24,7 @@
 #import "IQUITextFieldView+Additions.h"
 #import <objc/runtime.h>
 
-@implementation UIView (Additions)
+@implementation UIView (Add)
 
 -(void)setKeyboardDistanceFromTextField:(CGFloat)keyboardDistanceFromTextField
 {

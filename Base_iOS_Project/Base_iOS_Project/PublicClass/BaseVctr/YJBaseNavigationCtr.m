@@ -117,7 +117,10 @@
 
 //是否支持左滑返回
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
-    DLog(@"self.currentShowVC = %@ === self.topViewController =%@",self.currentShowVC,self.topViewController);
+    
+    if ([NSStringFromClass([self.currentShowVC class]) isEqualToString:@"xxx"]) {
+        return NO;
+    }
     return (self.currentShowVC == self.topViewController);
 }
 

@@ -8,27 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-
-//全局视图ID
-typedef enum
-{
-    YJ_GView_Expand = 2460, //扩展专用
-    YJ_GView_Log ,          //log
-    YJ_GView_AlphaV,        //黑色透明背景页
-    YJ_GView_ActivityView,  //活动页面
-    YJ_GView_WaitBg,        //等待view的bg
-    YJ_GView_Tips,          //提示栏
-    YJ_GView_Guide,         //引导
-    YJ_GView_WeChatShareV,  //微信分享弹框
-    YJ_GView_PickerV,       //picker弹框
-    YJ_GView_UnlockV,       //解锁页
-    YJ_GView_TouchIDV,      //TOUCH ID解锁页
-    YJ_GView_Night,         //夜间模式
-    YJ_GView_Edge,          //边缘标识
-    
-}YJ_GlobalView_ID;
-
-@interface PubilcClass : NSObject
+@interface PublicUtil : NSObject
 /**
  *  金钱格式化
  *
@@ -103,6 +83,7 @@ typedef enum
 
 //获取当前正在显示VC
 + (UIViewController *)topViewController;
+
 @end
 
 
