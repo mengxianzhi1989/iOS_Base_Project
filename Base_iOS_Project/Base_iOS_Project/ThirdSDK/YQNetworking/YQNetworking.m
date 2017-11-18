@@ -12,14 +12,10 @@
 #import "YQNetworking+RequestManager.h"
 #import "YQCacheManager.h"
 
-
-static NSMutableArray   *requestTasksPool;
-
+static NSMutableArray *requestTasksPool;
 static NSMutableDictionary *headers;
-
-//static YQNetworkStatus  networkStatus;
-
 static NSTimeInterval  requestTimeout = 40.f;
+
 @interface YQNetworking()
 
 @end
@@ -32,6 +28,7 @@ static NSTimeInterval  requestTimeout = 40.f;
 
 #pragma mark - manager
 + (AFHTTPSessionManager *)manager {
+    
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -150,6 +147,9 @@ static NSTimeInterval  requestTimeout = 40.f;
         [alert show];
         return nil;
     }
+    YJBaseVCtr *vc = (YJBaseVCtr *)[PubilcClass topViewController];
+    [vc initWaitViewWithString:@"加载中"];
+    
     QFHttpUrl *httpUrl = [QFHttpUrl sharedHttpUrl];
     NSString *hostName = [httpUrl defaulthostName];
     NSString *url = [hostName stringByAppendingString:[httpUrl urlOfRequestId:requestType]];
@@ -166,9 +166,6 @@ static NSTimeInterval  requestTimeout = 40.f;
     //    }
     
     AFHTTPSessionManager *manager = [self manager];
-    
-    YJBaseVCtr *vc = (YJBaseVCtr *)[PubilcClass topViewController];
-    [vc initWaitViewWithString:@"加载中"];
     session = [manager POST:url
                  parameters:params
                    progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -193,12 +190,17 @@ static NSTimeInterval  requestTimeout = 40.f;
                        [[self allTasks] removeObject:session];
                    }];
     if ([self haveSameRequestInTasksPool:session]) {
+        DLog(@"重复请求URL = %@",session.originalRequest)
         [session cancel];
         return session;
     }else {
         YQURLSessionTask *oldTask = [self cancleSameRequestInTasksPool:session];
-        if (oldTask) [[self allTasks] removeObject:oldTask];
-        if (session) [[self allTasks] addObject:session];
+        if (oldTask) {
+            [[self allTasks] removeObject:oldTask];
+        }
+        if (session) {
+            [[self allTasks] addObject:session];
+        }
         [session resume];
         return session;
     }
@@ -219,26 +221,19 @@ static NSTimeInterval  requestTimeout = 40.f;
         [alert show];
         return nil;
     }
-    
     __block YQURLSessionTask *session = nil;
     AFHTTPSessionManager *manager = [self manager];
     session = [manager POST:url
                  parameters:nil
   constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
       NSString *fileName = nil;
-      
       NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
       formatter.dateFormat = @"yyyyMMddHHmmss";
-      
       NSString *day = [formatter stringFromDate:[NSDate date]];
-      
       fileName = [NSString stringWithFormat:@"%@.%@",day,type];
-      
       [formData appendPartWithFileData:data name:name fileName:fileName mimeType:mimeType];
-      
   } progress:^(NSProgress * _Nonnull uploadProgress) {
       if (progressBlock) progressBlock (uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
-      
   } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
       if (successBlock) successBlock(responseObject);
       [[self allTasks] removeObject:session];
@@ -246,11 +241,8 @@ static NSTimeInterval  requestTimeout = 40.f;
   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
       if (failBlock) failBlock(error);
       [[self allTasks] removeObject:session];
-      
   }];
-    
     [session resume];
-    
     if (session) {
         [[self allTasks] addObject:session];
     }
@@ -278,13 +270,10 @@ static NSTimeInterval  requestTimeout = 40.f;
     __block NSMutableArray *failResponse = [NSMutableArray array];
     
     dispatch_group_t uploadGroup = dispatch_group_create();
-    
     NSInteger count = datas.count;
     for (int i = 0; i < count; i++) {
         __block YQURLSessionTask *session = nil;
-        
         dispatch_group_enter(uploadGroup);
-        
         session = [self uploadFileWithUrl:url
                                  fileData:datas[i]
                                      type:type name:name
@@ -295,11 +284,8 @@ static NSTimeInterval  requestTimeout = 40.f;
                                 
                             } successBlock:^(id response) {
                                 [responses addObject:response];
-                                
                                 dispatch_group_leave(uploadGroup);
-                                
                                 [sessions removeObject:session];
-                                
                             } failBlock:^(NSError *error) {
                                 NSError *Error = [NSError errorWithDomain:url code:-999 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"第%d次上传失败",i]}];
                                 

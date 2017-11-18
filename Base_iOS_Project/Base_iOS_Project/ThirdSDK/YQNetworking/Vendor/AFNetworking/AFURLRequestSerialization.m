@@ -374,7 +374,6 @@ forHTTPHeaderField:(NSString *)field
     }
 
     mutableRequest = [[self requestBySerializingRequest:mutableRequest withParameters:parameters error:error] mutableCopy];
-//    mutableRequest setAllHTTPHeaderFields:<#(NSDictionary<NSString *,NSString *> * _Nullable)#>
 	return mutableRequest;
 }
 

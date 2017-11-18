@@ -56,9 +56,7 @@
 		6BB979FE1FBB2EA7001B316B /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB979E81FBB2EA7001B316B /* UIWebView+AFNetworking.m */; };
 		6BB979FF1FBB2EA7001B316B /* YQNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB979EA1FBB2EA7001B316B /* YQNetworking.m */; };
 		6BB97A051FBB7B9C001B316B /* UIFont+CLTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97A041FBB7B9C001B316B /* UIFont+CLTheme.m */; };
-		6BB97A0E1FBB7CF5001B316B /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6BB97A0A1FBB7CF5001B316B /* LICENCE.txt */; };
 		6BB97A0F1FBB7CF5001B316B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97A0C1FBB7CF5001B316B /* Reachability.m */; };
-		6BB97A101FBB7CF5001B316B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6BB97A0D1FBB7CF5001B316B /* README.md */; };
 		6BB97A141FBB8812001B316B /* MJScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97A131FBB8812001B316B /* MJScrollView.m */; };
 		6BB97A841FBB899F001B316B /* UIView+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97A821FBB899F001B316B /* UIView+Add.m */; };
 		6BB97AAA1FBB8C4C001B316B /* IQNSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97A881FBB8C4C001B316B /* IQNSArray+Sort.m */; };
@@ -90,8 +88,9 @@
 		6BBDE6281FBCCB8100AE47B1 /* WeComeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBDE61F1FBCCB8100AE47B1 /* WeComeController.m */; };
 		6BBDE6291FBCCB8100AE47B1 /* WeComeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BBDE6201FBCCB8100AE47B1 /* WeComeController.xib */; };
 		6BBDE62C1FBCCBA900AE47B1 /* NewsLatestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBDE62B1FBCCBA900AE47B1 /* NewsLatestModel.m */; };
-		6BD947B91FBF7F5400F64E72 /* CLSystemHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD947B61FBF7F5400F64E72 /* CLSystemHelper.m */; };
-		6BD947BA1FBF7F5400F64E72 /* PubilcClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD947B81FBF7F5400F64E72 /* PubilcClass.m */; };
+		6BD947C01FC03C3200F64E72 /* CLSystemHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD947BD1FC03C3100F64E72 /* CLSystemHelper.m */; };
+		6BD947C11FC03C3200F64E72 /* PubilcClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD947BF1FC03C3200F64E72 /* PubilcClass.m */; };
+		6BD947C41FC03C3C00F64E72 /* MUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD947C31FC03C3C00F64E72 /* MUIButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,10 +187,8 @@
 		6BB979EA1FBB2EA7001B316B /* YQNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YQNetworking.m; sourceTree = "<group>"; };
 		6BB97A031FBB7B9C001B316B /* UIFont+CLTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+CLTheme.h"; sourceTree = "<group>"; };
 		6BB97A041FBB7B9C001B316B /* UIFont+CLTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+CLTheme.m"; sourceTree = "<group>"; };
-		6BB97A0A1FBB7CF5001B316B /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
 		6BB97A0B1FBB7CF5001B316B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		6BB97A0C1FBB7CF5001B316B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		6BB97A0D1FBB7CF5001B316B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		6BB97A121FBB8812001B316B /* MJScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJScrollView.h; sourceTree = "<group>"; };
 		6BB97A131FBB8812001B316B /* MJScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJScrollView.m; sourceTree = "<group>"; };
 		6BB97A821FBB899F001B316B /* UIView+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Add.m"; sourceTree = "<group>"; };
@@ -247,10 +244,12 @@
 		6BBDE6201FBCCB8100AE47B1 /* WeComeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WeComeController.xib; sourceTree = "<group>"; };
 		6BBDE62A1FBCCBA900AE47B1 /* NewsLatestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsLatestModel.h; sourceTree = "<group>"; };
 		6BBDE62B1FBCCBA900AE47B1 /* NewsLatestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsLatestModel.m; sourceTree = "<group>"; };
-		6BD947B51FBF7F5400F64E72 /* CLSystemHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLSystemHelper.h; sourceTree = "<group>"; };
-		6BD947B61FBF7F5400F64E72 /* CLSystemHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLSystemHelper.m; sourceTree = "<group>"; };
-		6BD947B71FBF7F5400F64E72 /* PubilcClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PubilcClass.h; sourceTree = "<group>"; };
-		6BD947B81FBF7F5400F64E72 /* PubilcClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PubilcClass.m; sourceTree = "<group>"; };
+		6BD947BC1FC03C3100F64E72 /* CLSystemHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLSystemHelper.h; sourceTree = "<group>"; };
+		6BD947BD1FC03C3100F64E72 /* CLSystemHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLSystemHelper.m; sourceTree = "<group>"; };
+		6BD947BE1FC03C3200F64E72 /* PubilcClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PubilcClass.h; sourceTree = "<group>"; };
+		6BD947BF1FC03C3200F64E72 /* PubilcClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PubilcClass.m; sourceTree = "<group>"; };
+		6BD947C21FC03C3C00F64E72 /* MUIButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUIButton.h; sourceTree = "<group>"; };
+		6BD947C31FC03C3C00F64E72 /* MUIButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,7 +399,7 @@
 		6B7850161FBA41B80030C733 /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				6BD947B41FBF7F5400F64E72 /* PublicUtil */,
+				6BD947BB1FC03C3100F64E72 /* PublicFile */,
 				6BB97A851FBB8C4C001B316B /* IQKeyboardManager */,
 				6BB97A111FBB8812001B316B /* MJScrollView */,
 				6B7850171FBA41B80030C733 /* AlertView */,
@@ -525,10 +524,8 @@
 		6BB97A091FBB7CF5001B316B /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				6BB97A0A1FBB7CF5001B316B /* LICENCE.txt */,
 				6BB97A0B1FBB7CF5001B316B /* Reachability.h */,
 				6BB97A0C1FBB7CF5001B316B /* Reachability.m */,
-				6BB97A0D1FBB7CF5001B316B /* README.md */,
 			);
 			path = Reachability;
 			sourceTree = "<group>";
@@ -663,15 +660,17 @@
 			path = GuideImage;
 			sourceTree = "<group>";
 		};
-		6BD947B41FBF7F5400F64E72 /* PublicUtil */ = {
+		6BD947BB1FC03C3100F64E72 /* PublicFile */ = {
 			isa = PBXGroup;
 			children = (
-				6BD947B51FBF7F5400F64E72 /* CLSystemHelper.h */,
-				6BD947B61FBF7F5400F64E72 /* CLSystemHelper.m */,
-				6BD947B71FBF7F5400F64E72 /* PubilcClass.h */,
-				6BD947B81FBF7F5400F64E72 /* PubilcClass.m */,
+				6BD947BC1FC03C3100F64E72 /* CLSystemHelper.h */,
+				6BD947BD1FC03C3100F64E72 /* CLSystemHelper.m */,
+				6BD947BE1FC03C3200F64E72 /* PubilcClass.h */,
+				6BD947BF1FC03C3200F64E72 /* PubilcClass.m */,
+				6BD947C21FC03C3C00F64E72 /* MUIButton.h */,
+				6BD947C31FC03C3C00F64E72 /* MUIButton.m */,
 			);
-			path = PublicUtil;
+			path = PublicFile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -738,7 +737,6 @@
 				6B7850131FBA41050030C733 /* README.md in Resources */,
 				6B784F921FB9FF0F0030C733 /* home@2x.png in Resources */,
 				6B784F871FB9FF0F0030C733 /* a1_titlebackground@2x.png in Resources */,
-				6BB97A101FBB7CF5001B316B /* README.md in Resources */,
 				6BBDE6291FBCCB8100AE47B1 /* WeComeController.xib in Resources */,
 				6B784F8A1FB9FF0F0030C733 /* discovery_filled@2x.png in Resources */,
 				6BBDE6241FBCCB8100AE47B1 /* welcome_logo_640@2x.png in Resources */,
@@ -751,7 +749,6 @@
 				6BBDE6211FBCCB8100AE47B1 /* welcome_logo_1242@2x.png in Resources */,
 				6B784F881FB9FF0F0030C733 /* back_arrow@2x.png in Resources */,
 				6B784F891FB9FF0F0030C733 /* discovery@2x.png in Resources */,
-				6BB97A0E1FBB7CF5001B316B /* LICENCE.txt in Resources */,
 				6BBDE6261FBCCB8100AE47B1 /* welcome_logo_6s@2x.png in Resources */,
 				6BBDE6231FBCCB8100AE47B1 /* welcome_logo_5s@2x.png in Resources */,
 				6B784F931FB9FF0F0030C733 /* home_filled@2x.png in Resources */,
@@ -783,6 +780,7 @@
 				6BB979F51FBB2EA7001B316B /* AFURLSessionManager.m in Sources */,
 				6BB979F91FBB2EA7001B316B /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				6BB979EE1FBB2EA7001B316B /* YQMemoryCache.m in Sources */,
+				6BD947C41FC03C3C00F64E72 /* MUIButton.m in Sources */,
 				6B7850231FBA41B80030C733 /* YJBaseNavigationCtr.m in Sources */,
 				6BB97AC81FBBA6A4001B316B /* SelectUrlViewController.m in Sources */,
 				6BB979FE1FBB2EA7001B316B /* UIWebView+AFNetworking.m in Sources */,
@@ -794,7 +792,7 @@
 				6BB979EB1FBB2EA7001B316B /* YQCacheManager.m in Sources */,
 				6BB979F61FBB2EA7001B316B /* AFAutoPurgingImageCache.m in Sources */,
 				6B7850151FBA41050030C733 /* YYClassInfo.m in Sources */,
-				6BD947BA1FBF7F5400F64E72 /* PubilcClass.m in Sources */,
+				6BD947C11FC03C3200F64E72 /* PubilcClass.m in Sources */,
 				6BB97AAA1FBB8C4C001B316B /* IQNSArray+Sort.m in Sources */,
 				6BB979EC1FBB2EA7001B316B /* YQDiskCache.m in Sources */,
 				6B7850221FBA41B80030C733 /* DQAlertView.m in Sources */,
@@ -810,7 +808,7 @@
 				6BB97AB01FBB8C4C001B316B /* IQKeyboardManager.m in Sources */,
 				6BB97AB31FBB8C4C001B316B /* IQBarButtonItem.m in Sources */,
 				6BBDE6281FBCCB8100AE47B1 /* WeComeController.m in Sources */,
-				6BD947B91FBF7F5400F64E72 /* CLSystemHelper.m in Sources */,
+				6BD947C01FC03C3200F64E72 /* CLSystemHelper.m in Sources */,
 				6BBDE62C1FBCCBA900AE47B1 /* NewsLatestModel.m in Sources */,
 				6BB979FD1FBB2EA7001B316B /* UIRefreshControl+AFNetworking.m in Sources */,
 				6BB97AB21FBB8C4C001B316B /* IQTextView.m in Sources */,

@@ -17,10 +17,11 @@
 #define HTTP_TIMEOUT_NUM 30
 
 typedef NS_ENUM(NSUInteger, RequestType) {
-    
-    Getbycondition = 0,
+    RequestType_None = 0,
+    Getbycondition,
     UserLoginType,
-    NewsLatest
+    NewsLatest,
+    Querybycondition
 
 };
 

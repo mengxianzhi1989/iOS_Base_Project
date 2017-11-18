@@ -13,6 +13,7 @@
 #import "NewsLatestModel.h"
 #import "AFNetworking.h"
 
+//哈哈哈哈 哈哈哈哈
 @interface ViewControllerThird ()
 
 @end
@@ -25,36 +26,56 @@
     [self initBackButton];
     [self initTitleView:@"ViewControllerThird"];
     
-    //    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    MUIButton *button = [MUIButton buttonWithType:UIButtonTypeCustom];
     [button setFrame:CGRectMake(0, 300, 300, 100)];
     [button setBackgroundColor:[UIColor redColor]];
     [button addTarget:self action:@selector(setTaskDidComplete11) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
-    //    NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
-    //    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
-    //        DLog(@"%@",@"success");
-    //        NewsLatestModel *lateModel = [NewsLatestModel yy_modelWithJSON:response];
-    ////        NSString *image = [[[lateModel.stories objectAtIndex:0] images] objectAtIndex:0];
-    //        [self showTipsMessage:MyFormat(@"%@",lateModel) withDuration:1];
-    //        [self clearWaitView];
-    //    } failBlock:^(NSError *error) {
-    //        DLog(@"%@",@"error");
-    //        [self showTipsMessage:@"error" withDuration:1];
-    //        [self clearWaitView];
-    //    }];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 100, kScreenWidth, [CLSystemHelper lineHigh05])];
+    [view setBackgroundColor:[UIColor redColor]];
+    [self.view addSubview:view];
+    
+    //    Getbycondition @{@"limit":@"5",@"page":@"1"}
+    //    Querybycondition
+        NSDictionary *dicParams = @{@"limit":@"10",
+          @"page":@"1",
+          @"cgFprovince":@"湖北",
+          @"cgFcity":@"咸宁市",
+          @"cgFcounty":@"通山县",
+          @"cgTprovince":@"湖北",
+          @"cgTcity":@"咸宁市",
+          @"cgTcounty":@"通山县"};
     
     
     [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
-        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
-        DLog(@"%@ --- %@",@"success",[model.rows objectAtIndex:0].picUrl);
+//        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
+//        DLog(@"%@ --- %@",@"success",[model.rows objectAtIndex:0].picUrl);
+        DLog(@"Getbycondition");
         [self clearWaitView];
     } failBlock:^(NSError *error) {
-        DLog(@"%@",error);
         [self clearWaitView];
     }];
+    
+    
+    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
+        //        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
+        //        DLog(@"%@ --- %@",@"success",[model.rows objectAtIndex:0].picUrl);
+        DLog(@"Getbycondition");
+        [self clearWaitView];
+    } failBlock:^(NSError *error) {
+        [self clearWaitView];
+    }];
+    
+    
+//    [YQNetworking postWithrequestType:Querybycondition params:dicParams successBlock:^(id response) {
+//        DLog(@"Querybycondition");
+//        [self clearWaitView];
+//    } failBlock:^(NSError *error) {
+//        [self clearWaitView];
+//    }];
+    
+    
 }
 
 //- (void)back:(UIButton *)aBtn{
@@ -64,7 +85,18 @@
 //}
 
 - (void)setTaskDidComplete11{
-    NSLog(@"--------------");
+    //        NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
+    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
+        DLog(@"%@",@"success");
+        NewsLatestModel *lateModel = [NewsLatestModel yy_modelWithJSON:response];
+        //        NSString *image = [[[lateModel.stories objectAtIndex:0] images] objectAtIndex:0];
+        [self showTipsMessage:MyFormat(@"%@",lateModel) withDuration:1];
+        [self clearWaitView];
+    } failBlock:^(NSError *error) {
+        DLog(@"%@",@"error");
+        [self showTipsMessage:@"error" withDuration:1];
+        [self clearWaitView];
+    }];
 }
 
 

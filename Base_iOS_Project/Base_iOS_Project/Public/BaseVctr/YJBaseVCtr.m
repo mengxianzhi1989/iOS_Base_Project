@@ -348,14 +348,11 @@
 #pragma mark - 监听左滑返回事件
 - (void)willMoveToParentViewController:(UIViewController*)parent{
     [super willMoveToParentViewController:parent];
-    DLog(@"%s,%@",__FUNCTION__,parent);
 }
 
 - (void)didMoveToParentViewController:(UIViewController*)parent{
     [super didMoveToParentViewController:parent];
-    DLog(@"%s,%@",__FUNCTION__,parent);
     if(!parent){
-        NSLog(@"左滑返回成功");
         if(self.successHandel) {
             self.successHandel();
         }
