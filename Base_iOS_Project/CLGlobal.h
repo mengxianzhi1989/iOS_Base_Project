@@ -8,30 +8,24 @@
 
 #ifndef CLGlobal_h
 
-#define kTestDebug
-
-/**AppStore渠道*/
+/**AppStore*/
 //#define _APP_STORE_ 1
 
-/*开发环境*/
+/*Dev环境*/
 #define _PGYER_CARDEBUG_ 1
 
+
 #if _APP_STORE_
-
-//信鸽AppStore
-#define KXGAppId          8943738397
-#define KXGAppKey         7832749
-#define KXGSecretKey      7483927483
-
+    #define KXGAppId          8943738397
+    #define KXGAppKey         7832749
+    #define KXGSecretKey      7483927483
 #elif _PGYER_CARDEBUG_
-//用于切换网络使用
-#define UrlKey @"UrlKey"
-
-//信鸽AppStore
-#define KXGAppId          8943738397
-#define KXGAppKey         7832749
-#define KXGSecretKey      7483927483
-
+    //用于切换网络使用
+    #define URL_KEY @"SELECT_URL_KEY"
+    #define kTestDebug
+    #define KXGAppId          8943738397
+    #define KXGAppKey         7832749
+    #define KXGSecretKey      7483927483
 #endif
 
 #if (_APP_STORE_ + _PGYER_CARDEBUG_ != 1)
@@ -45,10 +39,11 @@
 #endif
 
 
+//格式化
 #define MyFormat(format, ...) [NSString stringWithFormat:(format), ##__VA_ARGS__]
-
-// 判读代理是否响应
+//判读代理是否响应
 #define DELEGATE_IS_READY(x) (self.delegate && [self.delegate respondsToSelector:@selector(x)])
+//安全String
 #define SafeString(str) ((str == nil || STRING_IS_NIL(str)) ? @"" : str)
 // 判断字符串是否为空
 #define STRING_IS_NIL(key) (([@"<null>" isEqualToString:(key)] || [@"" isEqualToString:(key)] || key == nil || [key isKindOfClass:[NSNull class]]) ? YES: NO)
@@ -72,7 +67,7 @@ alpha:1.0]
 #define SYS_VER_BEYOND_AND_EQUAL_7 (MOBILE_SYS_VER >= 7.0)?(YES):(NO)
 #define SYS_VER_BEYOND_AND_EQUAL_11 (MOBILE_SYS_VER >= 11.0)?(YES):(NO)
 //是否是Iphone X
-#define kDevice_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+#define kDevice_IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
 //字体相关
 #define DefineFontOfSize(size) [UIFont lightFontWithSize:size]

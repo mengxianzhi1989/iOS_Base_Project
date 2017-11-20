@@ -12,6 +12,9 @@
 #import "AFHTTPSessionManager.h"
 #import "NewsLatestModel.h"
 #import "AFNetworking.h"
+#import "JKChooseProvinceViewController.h"
+
+
 
 //哈哈哈哈 哈哈哈哈
 @interface ViewControllerThird ()
@@ -27,7 +30,7 @@
     [self initTitleView:@"ViewControllerThird"];
     
     MUIButton *button = [MUIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(0, 300, 300, 100)];
+    [button setFrame:CGRectMake(0, self.mNavImgView.bottom + 100, 300, 100)];
     [button setBackgroundColor:[UIColor redColor]];
     [button addTarget:self action:@selector(setTaskDidComplete11) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
@@ -37,7 +40,7 @@
     [self.view addSubview:view];
     
     //    Getbycondition @{@"limit":@"5",@"page":@"1"}
-    //    Querybycondition
+//        Querybycondition
         NSDictionary *dicParams = @{@"limit":@"10",
           @"page":@"1",
           @"cgFprovince":@"湖北",
@@ -48,34 +51,39 @@
           @"cgTcounty":@"通山县"};
     
     
-    [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
-//        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
-//        DLog(@"%@ --- %@",@"success",[model.rows objectAtIndex:0].picUrl);
-        DLog(@"Getbycondition");
-        [self clearWaitView];
-    } failBlock:^(NSError *error) {
-        [self clearWaitView];
-    }];
+    __block BOOL bGetbycondition = NO;
+    __block BOOL bQuerybycondition = NO;
     
+    dispatch_group_t group = dispatch_group_create();
     
+    dispatch_group_enter(group);
     [YQNetworking postWithrequestType:Getbycondition params:@{@"limit":@"5",@"page":@"1"} successBlock:^(id response) {
         //        ProductModel *model = [ProductModel yy_modelWithJSON:response];;
         //        DLog(@"%@ --- %@",@"success",[model.rows objectAtIndex:0].picUrl);
+        bGetbycondition = YES;
+        dispatch_group_leave(group);
         DLog(@"Getbycondition");
         [self clearWaitView];
     } failBlock:^(NSError *error) {
         [self clearWaitView];
+        dispatch_group_leave(group);
+    }];
+    dispatch_group_enter(group);
+    [YQNetworking postWithrequestType:Querybycondition params:dicParams successBlock:^(id response) {
+        DLog(@"Querybycondition");
+        bQuerybycondition = YES;
+        dispatch_group_leave(group);
+        [self clearWaitView];
+    } failBlock:^(NSError *error) {
+        [self clearWaitView];
+        dispatch_group_leave(group);
     }];
     
     
-//    [YQNetworking postWithrequestType:Querybycondition params:dicParams successBlock:^(id response) {
-//        DLog(@"Querybycondition");
-//        [self clearWaitView];
-//    } failBlock:^(NSError *error) {
-//        [self clearWaitView];
-//    }];
-    
-    
+   dispatch_group_notify(group,dispatch_get_main_queue(), ^{
+        DLog(@"bQuerybycondition %d bGetbycondition %d  isMainQueue %d",bQuerybycondition,bGetbycondition,NSThread.currentThread.isMainThread);
+    });
+
 }
 
 //- (void)back:(UIButton *)aBtn{
@@ -86,20 +94,23 @@
 
 - (void)setTaskDidComplete11{
     //        NSString *url = @"http://news-at.zhihu.com/api/4/news/latest";
-    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
-        DLog(@"%@",@"success");
-        NewsLatestModel *lateModel = [NewsLatestModel yy_modelWithJSON:response];
-        //        NSString *image = [[[lateModel.stories objectAtIndex:0] images] objectAtIndex:0];
-        [self showTipsMessage:MyFormat(@"%@",lateModel) withDuration:1];
-        [self clearWaitView];
-    } failBlock:^(NSError *error) {
-        DLog(@"%@",@"error");
-        [self showTipsMessage:@"error" withDuration:1];
-        [self clearWaitView];
-    }];
+//    [YQNetworking getWithrequestType:NewsLatest params:nil successBlock:^(id response) {
+//        DLog(@"%@",@"success");
+//        NewsLatestModel *lateModel = [NewsLatestModel yy_modelWithJSON:response];
+//        //        NSString *image = [[[lateModel.stories objectAtIndex:0] images] objectAtIndex:0];
+//        [self showTipsMessage:MyFormat(@"%@",lateModel) withDuration:1];
+//        [self clearWaitView];
+//    } failBlock:^(NSError *error) {
+//        DLog(@"%@",@"error");
+//        [self showTipsMessage:@"error" withDuration:1];
+//        [self clearWaitView];
+//    }];
+    
+    
+    JKChooseProvinceViewController *chooseProinceVc = [[JKChooseProvinceViewController alloc]init];
+    [self.navigationController pushViewController:chooseProinceVc animated:YES];
+    
 }
-
-
 
 @end
 

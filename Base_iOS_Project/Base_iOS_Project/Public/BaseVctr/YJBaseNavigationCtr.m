@@ -122,7 +122,7 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     [super pushViewController:viewController animated:animated];
-    if (kDevice_Is_iPhoneX) {
+    if (kDevice_IS_iPhoneX) {
         CGRect frame = self.tabBarController.tabBar.frame;
         frame.origin.y = [UIScreen mainScreen].bounds.size.height - frame.size.height;
         [AppDelegate getAppDelegate].mTabBarVCtr.tabBar.frame = frame;

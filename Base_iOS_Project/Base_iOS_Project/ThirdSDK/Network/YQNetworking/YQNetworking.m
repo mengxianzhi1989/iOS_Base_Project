@@ -225,23 +225,23 @@ static NSTimeInterval  requestTimeout = 40.f;
     AFHTTPSessionManager *manager = [self manager];
     session = [manager POST:url
                  parameters:nil
-  constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-      NSString *fileName = nil;
-      NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-      formatter.dateFormat = @"yyyyMMddHHmmss";
-      NSString *day = [formatter stringFromDate:[NSDate date]];
-      fileName = [NSString stringWithFormat:@"%@.%@",day,type];
-      [formData appendPartWithFileData:data name:name fileName:fileName mimeType:mimeType];
-  } progress:^(NSProgress * _Nonnull uploadProgress) {
-      if (progressBlock) progressBlock (uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
-  } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-      if (successBlock) successBlock(responseObject);
-      [[self allTasks] removeObject:session];
-      
-  } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-      if (failBlock) failBlock(error);
-      [[self allTasks] removeObject:session];
-  }];
+                 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+          NSString *fileName = nil;
+          NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+          formatter.dateFormat = @"yyyyMMddHHmmss";
+          NSString *day = [formatter stringFromDate:[NSDate date]];
+          fileName = [NSString stringWithFormat:@"%@.%@",day,type];
+          [formData appendPartWithFileData:data name:name fileName:fileName mimeType:mimeType];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+         if (progressBlock){progressBlock(uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
+         }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (successBlock) successBlock(responseObject);
+        [[self allTasks] removeObject:session];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+          if (failBlock) failBlock(error);
+          [[self allTasks] removeObject:session];
+    }];
     [session resume];
     if (session) {
         [[self allTasks] addObject:session];
@@ -288,11 +288,8 @@ static NSTimeInterval  requestTimeout = 40.f;
                                 [sessions removeObject:session];
                             } failBlock:^(NSError *error) {
                                 NSError *Error = [NSError errorWithDomain:url code:-999 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"第%d次上传失败",i]}];
-                                
                                 [failResponse addObject:Error];
-                                
                                 dispatch_group_leave(uploadGroup);
-                                
                                 [sessions removeObject:session];
                             }];
         [session resume];
@@ -364,7 +361,6 @@ static NSTimeInterval  requestTimeout = 40.f;
                           
                           successBlock(downFileUrl);
                       }
-                      
                   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                       if (failBlock) {
                           failBlock (error);
@@ -410,7 +406,6 @@ static NSTimeInterval  requestTimeout = 40.f;
 
 + (void)configHttpHeader:(NSDictionary *)httpHeader {
     [headers addEntriesFromDictionary:httpHeader];
-    DLog(@"headers %@",headers);
 }
 
 + (NSArray *)currentRunningTasks {

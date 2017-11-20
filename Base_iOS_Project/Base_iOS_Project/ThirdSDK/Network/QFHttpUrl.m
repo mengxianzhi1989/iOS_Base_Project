@@ -67,7 +67,7 @@ static QFHttpUrl *sharedHttpUrl = nil;
 
 - (NSString *)getBaseUrl{
 #ifdef kTestDebug
-    NSString *url=[kUserDefault objectForKey:UrlKey];
+    NSString *url=[kUserDefault objectForKey:URL_KEY];
     NSString *URL =  url.length > 0 ? url:kBaseUrl;
     return URL;
 #else

@@ -66,7 +66,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *url = [urlList objectAtIndex:indexPath.row];
-    [kUserDefault setObject:url forKey:UrlKey];
+    [kUserDefault setObject:url forKey:URL_KEY];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

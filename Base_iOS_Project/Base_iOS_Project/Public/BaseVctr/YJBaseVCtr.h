@@ -59,5 +59,6 @@
 #pragma mark - 提示信息View aDuration上线偏移量越大越靠上
 -(void)showTipsMessage:(NSString *)aMessage withDuration:(NSTimeInterval)aDuration offSetY:(CGFloat)offsety;
 
+- (void)pop;
 @end
 
