@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "DQAlertView.h"
 #import "YYModel.h"
-#import "PubilcClass.h"
+#import "PublicClass.h"
 #import "YJUIView+Additions.h"
 #import "YJBaseVCtr.h"
 #import "QFHttpDefine.h"
@@ -26,7 +26,8 @@
 #import "Reachability.h"
 #import "AppDelegate.h"
 #import "UIFont+CLTheme.h"
-#import "MUIButton.h"
+#import "UIButton+EX.h"
+#import "UIView+Toast.h"
 
 #endif
 

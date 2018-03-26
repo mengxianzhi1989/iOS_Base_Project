@@ -9,7 +9,6 @@
 #import "ViewControllerSecond.h"
 #import "ViewControllerThird.h"
 #import "YJBaseNavigationCtr.h"
-#import "SelectUrlViewController.h"
 
 @interface ViewControllerSecond ()
 
@@ -40,19 +39,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    #ifdef kTestDebug
-        UIButton *tempButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [tempButton setFrame:CGRectMake(kScreenWidth - 100, self.mNavImgView.bottom, 80, 40)];
-        [tempButton setTitle:@"网络选择" forState:UIControlStateNormal];
-        [tempButton setBackgroundColor:[UIColor redColor]];
-        [tempButton addTarget:self action:@selector(selectNetWork) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:tempButton];
-    #endif
 }
 
-- (void)selectNetWork{
-    SelectUrlViewController *selectUrlVc = [[SelectUrlViewController alloc]init];
-    [self.navigationController pushViewController:selectUrlVc animated:YES];
-}
 
 @end

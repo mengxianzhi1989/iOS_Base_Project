@@ -7,13 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+typedef enum{
+    
+    CurrentRequestType_None,        //不需要AccToken
+    CurrentRequestType_Other,       //需要
+    CurrentRequestType_Remove,      //被剔除
+    CurrentRequestType_TokenExpired,//token过期
+    CurrentRequestType_SeverException//服务器异常 重新登
+    
+}CurrentRequestType;
 
 
-/**
- *  请求任务
- */
-typedef NSURLSessionTask YQURLSessionTask;
-
+typedef void(^YQResponseNewTokenBlock)(CurrentRequestType currentRequestType,NSString *token,NSError *error);
 /**
  *  成功回调
  *
@@ -35,7 +40,7 @@ typedef void(^YQResponseFailBlock)(NSError *error);
  *  @param totalBytes                总下载大小
  */
 typedef void (^YQDownloadProgress)(int64_t bytesRead,
-int64_t totalBytes);
+                                   int64_t totalBytes);
 
 /**
  *  下载成功回调
@@ -52,7 +57,7 @@ typedef void(^YQDownloadSuccessBlock)(NSURL *url);
  *  @param totalBytes                总上传大小
  */
 typedef void(^YQUploadProgressBlock)(int64_t bytesWritten,
-int64_t totalBytes);
+                                     int64_t totalBytes);
 /**
  *  多文件上传成功回调
  *
@@ -75,13 +80,6 @@ typedef YQResponseFailBlock YQDownloadFailBlock;
 
 @interface YQNetworking : NSObject
 
-/**
- *  正在运行的网络任务
- *
- *  @return task
- */
-+ (NSArray *)currentRunningTasks;
-
 
 /**
  *  配置请求头
@@ -91,17 +89,7 @@ typedef YQResponseFailBlock YQDownloadFailBlock;
 + (void)configHttpHeader:(NSDictionary *)httpHeader;
 
 /**
- *  取消GET请求
- */
-+ (void)cancelRequestWithURL:(NSString *)url;
-
-/**
- *  取消所有请求
- */
-+ (void)cancleAllRequest;
-
-/**
- *	设置超时时间
+ *    设置超时时间
  *
  *  @param timeout 超时时间
  */
@@ -109,62 +97,51 @@ typedef YQResponseFailBlock YQDownloadFailBlock;
 
 /**
  *  GET请求
- *
  *  @param requestType      RequestType
  *  @param params           拼接参数
- *  @param successBlock     成功回调
- *  @param failBlock        失败回调
- *
- *  @return 返回的对象中可取消请求
+ *  @param finishBlock     成功回调
  */
-+ (YQURLSessionTask *)getWithrequestType:(RequestType)requestType
-                                  params:(NSDictionary *)params
-                            successBlock:(YQResponseSuccessBlock)successBlock
-                               failBlock:(YQResponseFailBlock)failBlock;
-
-
++ (void)getWithRequestType:(RequestType)requestType withView:(UIView *)aView
+                     params:(id)params tipMsg:(NSString *)tipMsg
+                finishBlock:(YQResponseSuccessBlock)finishBlock;
 
 
 /**
  *  POST请求
- *
  *  @param requestType      RequestType
  *  @param params           拼接参数
- *  @param successBlock     成功回调
- *  @param failBlock        失败回调
- *
- *  @return 返回的对象中可取消请求
+ *  @param finishBlock     成功回调
  */
-+ (YQURLSessionTask *)postWithrequestType:(RequestType)requestType
-                                  params:(NSDictionary *)params
-                            successBlock:(YQResponseSuccessBlock)successBlock
-                               failBlock:(YQResponseFailBlock)failBlock;
-
-
-
++ (void)postWithRequestType:(RequestType)requestType withView:(UIView *)aView
+                     params:(id)params tipMsg:(NSString *)tipMsg 
+                finishBlock:(YQResponseSuccessBlock)finishBlock;
+/**
+ *  POST请求
+ *  @param requestType      RequestType
+ *  @param params           拼接参数
+ *  @param finishBlock     成功回调
+ *  @param failBlock     失败回调
+ */
++ (void)postWithRequestType:(RequestType)requestType withView:(UIView *)aView
+                     params:(id)params tipMsg:(NSString *)tipMsg
+                finishBlock:(YQResponseSuccessBlock)finishBlock
+                failBlock:(YQResponseFailBlock)failBlock;
 
 /**
  *  文件上传
- *
  *  @param url              上传文件接口地址
  *  @param data             上传文件数据
- *  @param type             上传文件类型
  *  @param name             上传文件服务器文件夹名
- *  @param mimeType         mimeType
  *  @param progressBlock    上传文件路径
- *	@param successBlock     成功回调
- *	@param failBlock		失败回调
- *
- *  @return 返回的对象中可取消请求
+ *  @param successBlock     成功回调
+ *  @param failBlock        失败回调
  */
-+ (YQURLSessionTask *)uploadFileWithUrl:(NSString *)url
-                               fileData:(NSData *)data
-                                   type:(NSString *)type
-                                   name:(NSString *)name
-                               mimeType:(NSString *)mimeType
-                          progressBlock:(YQUploadProgressBlock)progressBlock
-                           successBlock:(YQResponseSuccessBlock)successBlock
-                              failBlock:(YQResponseFailBlock)failBlock;
++ (void)uploadFileWithUrl:(NSString *)url
+                 fileData:(NSData *)data
+                     name:(NSString *)name param:(NSDictionary *)param
+            progressBlock:(YQUploadProgressBlock)progressBlock
+             successBlock:(YQResponseSuccessBlock)successBlock
+                failBlock:(YQResponseFailBlock)failBlock;
 
 
 /**
@@ -172,23 +149,18 @@ typedef YQResponseFailBlock YQDownloadFailBlock;
  *
  *  @param url           上传文件地址
  *  @param datas         数据集合
- *  @param type          类型
- *  @param name          服务器文件夹名
- *  @param mimeTypes      mimeTypes
+ *  @param names          服务器文件夹名
  *  @param progressBlock 上传进度
- *  @param successBlock  成功回调
+ *  @param successBlock   成功回调
  *  @param failBlock     失败回调
- *
- *  @return 任务集合
  */
-+ (NSArray *)uploadMultFileWithUrl:(NSString *)url
-                         fileDatas:(NSArray *)datas
-                              type:(NSString *)type
-                              name:(NSString *)name
-                          mimeType:(NSString *)mimeTypes
-                     progressBlock:(YQUploadProgressBlock)progressBlock
-                      successBlock:(YQMultUploadSuccessBlock)successBlock
-                         failBlock:(YQMultUploadFailBlock)failBlock;
++ (void)uploadMultFileWithUrl:(NSString *)url
+                    fileDatas:(NSArray *)datas
+                        names:(NSArray *)names
+                        param:(NSDictionary *)param
+                progressBlock:(YQUploadProgressBlock)progressBlock
+                 successBlock:(YQResponseSuccessBlock)successBlock
+                    failBlock:(YQResponseFailBlock)failBlock;
 
 /**
  *  文件下载
@@ -197,14 +169,22 @@ typedef YQResponseFailBlock YQDownloadFailBlock;
  *  @param progressBlock 下载进度
  *  @param successBlock  成功回调
  *  @param failBlock     下载回调
- *
- *  @return 返回的对象可取消请求
+ 
  */
-+ (YQURLSessionTask *)downloadWithUrl:(NSString *)url
-                        progressBlock:(YQDownloadProgress)progressBlock
-                         successBlock:(YQDownloadSuccessBlock)successBlock
-                            failBlock:(YQDownloadFailBlock)failBlock;
++ (void)downloadWithUrl:(NSString *)url
+          progressBlock:(YQDownloadProgress)progressBlock
+           successBlock:(YQDownloadSuccessBlock)successBlock
+              failBlock:(YQDownloadFailBlock)failBlock;
 
+/**
+ *  身份保存认证POST请求
+ *  @param requestType      RequestType
+ *  @param params           拼接参数
+ *  @param finishBlock     成功回调
+ */
+//+ (void)postWithCOSaveIdentityInfoRequestType:(RequestType)requestType withView:(UIView *)aView
+//                     params:(id)params tipMsg:(NSString *)tipMsg
+//                finishBlock:(YQResponseSuccessBlock)finishBlock;
 @end
 
 
@@ -250,3 +230,4 @@ typedef YQResponseFailBlock YQDownloadFailBlock;
 + (void)clearDownloadData;
 
 @end
+

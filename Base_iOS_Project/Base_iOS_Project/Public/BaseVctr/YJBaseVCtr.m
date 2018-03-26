@@ -1,9 +1,9 @@
 //
 //  YJBaseVCtr.m
-//  youjie
+//  mljr
 //
-//  Created by kongfugen on 15/2/28.
-//  Copyright (c) 2015年 youjie8.com. All rights reserved.
+//  Created by mengxianzhi on 16/2/28.
+//  Copyright (c) 2015年 mljr.com. All rights reserved.
 //
 
 #define TITLETAG 919191
@@ -16,12 +16,24 @@
 @interface YJBaseVCtr ()
 
 //等待提示view
-@property (nonatomic, retain) UIView*           mWaitBgView;
+@property (nonatomic, retain) UIView *mWaitBgView;
 //提示信息背景view
-@property (nonatomic, strong) UIView*           mTipsMessageBgView;
+@property (nonatomic, strong) UIView *mTipsMessageBgView;
 //title str
-@property (nonatomic, strong) NSString*         mTitleStr;
+@property (nonatomic, strong) NSString *mTitleStr;
+//右侧事件按钮
+@property (nonatomic, strong) UIButton *rightButton;
+@property (nonatomic,strong) UIView *mIncreaseView;
+@property (nonatomic,strong) UIImageView *noNetWorkImageView;
+@property (nonatomic,strong) UILabel *redPointLable;        //消息展示
+@property (nonatomic,strong) UIImageView *noDataImageView;  //无数据提示
+@property (nonatomic,strong) UILabel  *noDataLabel;         //无数据提示语
+@property (nonatomic,assign) BOOL isReloadRootVc;           //是否需要刷新首页
 
+@property (nonatomic,strong) UIScrollView *logScrollerView;
+@property (nonatomic,strong) UILabel *logRequesLabel;
+@property (nonatomic,strong) UILabel *logResponseLabel;
+@property (nonatomic,strong) UIView *noNetWorkBgView;
 @end
 
 @implementation YJBaseVCtr
@@ -33,19 +45,35 @@
 @synthesize isDismissing;
 @synthesize mTipsMessageBgView;
 @synthesize mTitleStr;
+@synthesize isListenerLoading;
+@synthesize mIncreaseView;
+@synthesize noNetWorkImageView;
+@synthesize redPointLable;
 
 -(void)dealloc {
+    DLog(@"VC ------ %@ 被释放",NSStringFromClass([self class]));
     [self clearWaitView];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColorFromRGB(0xf6f6f6);
+    self.view.backgroundColor = UIColorFromRGB(0xF5F5F5);
     self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, kScreenWidth, kScreenHeight);
+    mIncreaseView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, self.mIncrease)];
+//    [mIncreaseView setBackgroundColor:[UIColor blackColor]];
+    self.isReloadRootVc = NO;
+    [self.view addSubview:mIncreaseView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)setIsLoading:(BOOL)isLoading{
+    if (isListenerLoading) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = isLoading;
+    }
 }
 
 - (instancetype)init {
@@ -90,10 +118,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+//    [MobClick beginLogPageView:[NSString stringWithFormat:@"%@", [[self class] description]]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+//    [MobClick endLogPageView:[NSString stringWithFormat:@"%@", [[self class] description]]];
 }
 
 -(UIImageView *)mNavImgView {
@@ -103,7 +133,10 @@
         //标题图片
         mNavImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,kScreenWidth,self.mNavBarH + self.mIncrease)];
         mNavImgView.userInteractionEnabled = YES;
-        mNavImgView.image = [[UIImage imageNamed:@"a1_titlebackground"] stretchableImageWithLeftCapWidth:6 topCapHeight:6];
+        mNavImgView.image = [PublicClass createImageWithColor:UIColorFromRGB(0x428cfc)];
+
+//        mNavImgView.image = [[UIImage imageNamed:@"a1_titlebackground"] stretchableImageWithLeftCapWidth:6 topCapHeight:6];
+        [mNavImgView addSubview:mIncreaseView];
         [self.view addSubview:mNavImgView];
     }
     return mNavImgView;
@@ -128,7 +161,7 @@
 
 -(void)initWaitViewWithString:(NSString*)aStr {
     [self clearWaitView];
-    CGSize textSize = [PubilcClass string:aStr withFont:13 withMaxWidth:80];
+    CGSize textSize = [PublicClass string:aStr withFont:13 withMaxWidth:80];
     UIView* bgview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120,120)];
     mWaitBgView = bgview;
     
@@ -160,11 +193,12 @@
 }
 
 -(void)initBlockWaitWithString:(NSString*)aStr {
+    [self clearWaitView];
     UIView* bgView = [[UIView alloc] initWithFrame:[UIScreen mainScreen ].bounds];
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
     mWaitBgView = bgView;
     [self.view addSubview:bgView];
-    CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
+    CGSize textSize = [PublicClass string:aStr withFont:14 withMaxWidth:80];
     UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,120,120)];
     
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
@@ -193,12 +227,13 @@
 }
 
 -(void)initBlockWaitUnderNavigationaBarWithString:(NSString*)aStr {
+    [self clearWaitView];
     UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0, mNavImgView.bottom, kScreenWidth, kScreenHeight- mNavImgView.bottom)];
     mWaitBgView = bgView;
     [bgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
     [self.view addSubview:bgView];
     
-    CGSize textSize = [PubilcClass string:aStr withFont:14 withMaxWidth:80];
+    CGSize textSize = [PublicClass string:aStr withFont:14 withMaxWidth:80];
     UIView* realBgView = [[UIView alloc] initWithFrame:CGRectMake(0.5*(kScreenWidth - 152), 0.5*(kScreenHeight - 152)-mNavImgView.bottom, 152, 152)];
     
     [realBgView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
@@ -228,52 +263,11 @@
 
 -(void)showTipsMessage:(NSString *)aMessage withDuration:(NSTimeInterval)aDuration offSetY:(CGFloat)offsety
 {
-    [self removeTipsView];
-    float mTipsViewWidth = 150;
-    UIWindow * window = [UIApplication sharedApplication].keyWindow;
-    UIView *showview = [[UIView alloc]init];
-    self.mTipsMessageBgView = showview;
-    mTipsMessageBgView.backgroundColor = [UIColor blackColor];
-    mTipsMessageBgView.frame = CGRectMake(1, 1, 1, 1);
-    mTipsMessageBgView.alpha = 1.0f;
-    mTipsMessageBgView.layer.cornerRadius = 5.0f;
-    mTipsMessageBgView.layer.masksToBounds = YES;
-    [window addSubview:mTipsMessageBgView];
-    
-    UILabel *label = [[UILabel alloc]init];
-    CGSize LabelSize = [PubilcClass string:aMessage withFont:17 withMaxWidth:mTipsViewWidth-20];
-    label.frame = CGRectMake((mTipsViewWidth-LabelSize.width)/2, 10, LabelSize.width, LabelSize.height);
-    label.text = aMessage;
-    label.textColor = [UIColor whiteColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont boldSystemFontOfSize:15];
-    label.numberOfLines = 0;
-    [mTipsMessageBgView addSubview:label];
-    mTipsMessageBgView.frame = CGRectMake(0,0,mTipsViewWidth,LabelSize.height+20);
-    mTipsMessageBgView.center = CGPointMake(window.centerX, window.centerY-offsety);
-    
-    mTipsMessageBgView.alpha = 0;
-    [UIView animateWithDuration:0.5 animations:^{
-        mTipsMessageBgView.alpha = 1.0;
-    } completion:^(BOOL finished) {
-        [UIView animateKeyframesWithDuration:0.5 delay:1.0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
-            mTipsMessageBgView.alpha = 0;
-        } completion:^(BOOL finished) {
-            [self removeTipsView];
-        }];
-    }];
+    [PublicClass showToast:nil message:aMessage duration:aDuration position:offsety];
 }
 
 -(void)showTipsMessage:(NSString *)aMessage withDuration:(NSTimeInterval)aDuration {
     [self showTipsMessage:aMessage withDuration:aDuration offSetY:0];
-}
-
--(void)removeTipsView {
-    if (mTipsMessageBgView != nil) {
-        [mTipsMessageBgView removeFromSuperview];
-        mTipsMessageBgView = nil;
-    }
 }
 
 -(void)initBackButton {
@@ -285,7 +279,7 @@
     if(image) {
         backimage = image;
     }else {
-        backimage = [UIImage imageNamed:@"back_arrow"];
+        backimage = [UIImage imageNamed:@"返回"];
     }
     UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, self.mIncrease, self.mNavBarH, self.mNavBarH)];
     backButton.tag = 919;
@@ -315,10 +309,19 @@
     if(textColor){
         label.textColor = textColor;
     }else {
-        label.textColor = UIColorFromRGB(0x313131);
+        label.textColor = [UIColor whiteColor];
     }
     label.font = fontS;
     label.tag = TITLETAG;
+
+#ifdef kTestDebug
+    [label setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleDoubleTap)];
+    doubleTapGesture.numberOfTapsRequired =2;
+    doubleTapGesture.numberOfTouchesRequired =1;
+    [label addGestureRecognizer:doubleTapGesture];
+#endif
+
     [self.mNavImgView addSubview:label];
 }
 
@@ -353,26 +356,137 @@
 - (void)didMoveToParentViewController:(UIViewController*)parent{
     [super didMoveToParentViewController:parent];
     if(!parent){
-        if(self.successHandel) {
-            self.successHandel();
+        if (self.isReloadRootVc) {
+            [self loadRootVc];
         }
     }
 }
 
 #pragma mark - 返回
 -(void)backAction:(UIButton *)aBtn {
-    [YQNetworking cancleAllRequest];
     [self clearWaitView];
-    if (self.navigationController != nil ) {
-        [self.navigationController popViewControllerAnimated:YES];
-        if(self.successHandel) {
-            self.successHandel();
+    if (self.navigationController != nil) {
+        if (self.navigationController.viewControllers.count > 1) {
+            [self.navigationController popViewControllerAnimated:YES];
+            if(self.successHandel) {
+                self.successHandel();
+            }
+        }else{
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
+}
+
+- (void)createNavRightButtonWithImageName:(NSString *)imageName
+                                   action:(SEL)action
+{
+    UIImage *image = [UIImage imageNamed:imageName];
+    CGRect rect = CGRectMake(kScreenWidth - 44 - 6, self.mIncrease, 44, 44);
+    self.rightButton = [UIButton backBtnWithFrame:rect
+                                            title:nil
+                                       titleColor:UIColorFromRGB(0x00a0e9)];
+    [self.rightButton setImage:image forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    [self.mNavImgView addSubview:self.rightButton];
+    
+    redPointLable = [[UILabel alloc]initWithFrame:CGRectMake(self.rightButton.width - 10, 10, 6, 6)];
+    [redPointLable setBackgroundColor:[UIColor redColor]];
+    [redPointLable.layer setMasksToBounds:YES];
+    [redPointLable setHidden:YES];
+    [redPointLable.layer setCornerRadius:3];
+    [self.rightButton addSubview:redPointLable];
+    
+}
+    
+- (void)createNavSecondRightButtonWithImageName:(NSString *)imageName
+                                         action:(SEL)action{
+    UIImage *image = [UIImage imageNamed:imageName];
+    CGRect rect = CGRectMake(kScreenWidth - 44 * 2- 6 * 2, self.mIncrease, 44, 44);
+    self.rightButton = [UIButton backBtnWithFrame:rect
+                                            title:nil
+                                       titleColor:UIColorFromRGB(0x00a0e9)];
+    [self.rightButton setImage:image forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    [self.mNavImgView addSubview:self.rightButton];
+}
+- (void)rightRedPointHidden:(BOOL)Hidden{
+    [redPointLable setHidden:!Hidden];
+}
+
+- (void)createNavLeftButtonWithImageName:(NSString *)imageName
+                                  action:(SEL)action{
+    UIImage *image = [UIImage imageNamed:imageName];
+    CGRect rect = CGRectMake(6, self.mIncrease, 44, 44);
+    self.rightButton = [UIButton backBtnWithFrame:rect
+                                            title:nil
+                                       titleColor:UIColorFromRGB(0x00a0e9)];
+    [self.rightButton setImage:image forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    [self.mNavImgView addSubview:self.rightButton];
+}
+
+- (void)createNavRightButtonWithTitle:(NSString *)title
+                               action:(SEL)action
+{
+    CGRect frame = CGRectMake(kScreenWidth - 80, self.mIncrease,80, 44);
+    UIButton *btn = [[UIButton alloc]initWithFrame:frame];
+    btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    btn.contentEdgeInsets = UIEdgeInsetsMake(0,0, 0, 15);
+    [btn setTitle:title forState:UIControlStateNormal];
+    [btn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+    btn.titleLabel.font = F14;
+    [btn addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    [self.mNavImgView addSubview:btn];
 }
 
 - (void)pop{
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+/**
+ 目前启动页是黑色 若改为白色则 只需在plist文件添加
+ key: Status bar style
+ value: UIStatusBarStyleLightContent
+ 参考：http://blog.csdn.net/deft_mkjing/article/details/51705021
+ */
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+
+- (void)needLoadRootVc{
+    self.isReloadRootVc = YES;
+}
+
+- (UIScrollView *)logScrollerView{
+    if (_logScrollerView == nil) {
+        _logScrollerView = [[UIScrollView alloc]initWithFrame:self.view.frame];
+        [_logScrollerView setBackgroundColor:UIColorFromRGB(0xF6F6F6)];
+        UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeLogScrollerView)];
+        doubleTapGesture.numberOfTapsRequired =2;
+        doubleTapGesture.numberOfTouchesRequired =1;
+        [_logScrollerView addGestureRecognizer:doubleTapGesture];
+    }
+    return _logScrollerView;
+}
+
+- (UILabel *)logRequesLabel{
+    if (_logRequesLabel == nil) {
+        _logRequesLabel = [PublicClass createLabel:[UIFont systemFontOfSize:14] color:C1];
+        [_logRequesLabel setNumberOfLines:0];
+        [_logRequesLabel sizeToFit];
+    }
+    return _logRequesLabel;
+}
+
+- (UILabel *)logResponseLabel{
+    if (_logResponseLabel == nil) {
+        _logResponseLabel = [PublicClass createLabel:[UIFont systemFontOfSize:14] color:C1];
+        [_logResponseLabel setNumberOfLines:0];
+        [_logResponseLabel sizeToFit];
+    }
+    return _logResponseLabel;
+}
+
 @end
 

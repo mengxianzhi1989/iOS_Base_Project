@@ -77,7 +77,7 @@
     mTabBarVCtr.viewControllers = [NSArray arrayWithObjects:moneyNCtr, discoverNCtr, nil];
     
     UITabBar *tabBar = mTabBarVCtr.tabBar;
-    UIImage *image = [PubilcClass createImageWithColor:UIColorFromRGB(0xfbfcfc)];
+    UIImage *image = [PublicClass createImageWithColor:UIColorFromRGB(0xfbfcfc)];
     tabBar.backgroundImage = image;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];

@@ -16,16 +16,16 @@
 
 
 #if _APP_STORE_
-    #define KXGAppId          8943738397
-    #define KXGAppKey         7832749
-    #define KXGSecretKey      7483927483
+//    #define KXGAppId          8943738397
+//    #define KXGAppKey         7832749
+//    #define KXGSecretKey      7483927483
 #elif _PGYER_CARDEBUG_
     //用于切换网络使用
     #define URL_KEY @"SELECT_URL_KEY"
     #define kTestDebug
-    #define KXGAppId          8943738397
-    #define KXGAppKey         7832749
-    #define KXGSecretKey      7483927483
+//    #define KXGAppId          8943738397
+//    #define KXGAppKey         7832749
+//    #define KXGSecretKey      7483927483
 #endif
 
 #if (_APP_STORE_ + _PGYER_CARDEBUG_ != 1)
